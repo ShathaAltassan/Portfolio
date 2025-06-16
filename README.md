@@ -4,7 +4,7 @@
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/shatha-altassan/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-black)](https://github.com/ShathaAltassan)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-green)](https://shatha-altasan-portfolio.onrender.com/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-green)](https://shathatasan.netlify.app/)
 
 </div>
 
@@ -42,7 +42,7 @@ Welcome to my portfolio repository! I'm Shatha Altasan, a Computer Science gradu
 ## 🚀 Live Demo
 https://github.com/user-attachments/assets/baaf6acc-2042-47b3-adea-e0ba241d66b6
 
-Check out the live version of my portfolio: [Shatha's Portfolio](https://shatha-altasan-portfolio.onrender.com/)
+Check out the live version of my portfolio: [Shatha's Portfolio](https://shathatasan.netlify.app/)
 
 ## 📱 Connect With Me
 
