@@ -1,3 +1,42 @@
+// Loading Screen Handler
+document.addEventListener('DOMContentLoaded', () => {
+    // Show loading screen
+    const loadingScreen = document.querySelector('.loading-screen');
+    const particles = document.querySelectorAll('.particle');
+    
+    // Randomly reposition particles
+    function repositionParticle(particle) {
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const delay = Math.random() * 3;
+        
+        particle.style.left = `${x}%`;
+        particle.style.top = `${y}%`;
+        particle.style.animationDelay = `${delay}s`;
+    }
+    
+    // Initialize particles
+    particles.forEach(particle => {
+        repositionParticle(particle);
+        
+        // Reposition particle when animation ends
+        particle.addEventListener('animationend', () => {
+            repositionParticle(particle);
+        });
+    });
+    
+    // Hide loading screen when everything is loaded
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            loadingScreen.classList.add('fade-out');
+            // Remove from DOM after animation
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 800);
+        }, 2500); // Show loading screen for at least 2.5 seconds
+    });
+});
+
 function sendMail(params){
     var tempParams = {
         from_name: document.getElementById("fromName").value,
