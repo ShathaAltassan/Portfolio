@@ -1,5 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap');
 
+/*
+  Thmanyah Sans — self-hosted, license requires downloading directly from
+  font.thmanyah.com (no CDN redistribution). Drop the files into
+  public/fonts/thmanyah/ using these exact names and the @font-face rules
+  below activate automatically; until then, the fallback stack renders
+  (macOS/iOS already gets a very close look via -apple-system/SF Pro).
+*/
+@font-face {
+    font-family: 'Thmanyah Sans';
+    src: url('/fonts/thmanyah/ThmanyahSans-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Thmanyah Sans';
+    src: url('/fonts/thmanyah/ThmanyahSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Thmanyah Sans';
+    src: url('/fonts/thmanyah/ThmanyahSans-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Thmanyah Sans';
+    src: url('/fonts/thmanyah/ThmanyahSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Thmanyah Sans';
+    src: url('/fonts/thmanyah/ThmanyahSans-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Loading Screen */
 .loading-screen {
     position: fixed;
@@ -166,30 +209,47 @@
 
 :root {
   /* Dark Mode (Default) */
-  --background: url("/images/BB.png") no-repeat center;
+  --background: radial-gradient(ellipse 1100px 700px at 50% -8%, rgba(190, 80, 244, 0.16), transparent 60%), #0a0a0d;
   --text-color: white;
   --heading-color: #be50f4;
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --card-hover-bg: rgba(255, 255, 255, 0.2);
-  --navbar-bg: linear-gradient(180deg, rgba(45, 30, 55, 0.9) 0%, rgba(29, 29, 29, 0.6) 100%);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-hover-bg: rgba(255, 255, 255, 0.14);
+  --navbar-bg: rgba(15, 12, 18, 0.7);
   --footer-bg: transparent;
-  --box-shadow: 0px 10px 50px 5px #00000038;
-  --card-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  --box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.55);
+  --card-shadow: 0 20px 45px -18px rgba(0, 0, 0, 0.55);
   --toggle-icon: "\f185"; /* sun */
+
+  /* Apple-inspired design tokens */
+  --font-sans: 'Thmanyah Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+    'Poppins', 'Ubuntu', 'Segoe UI', sans-serif;
+  --radius-card: 26px;
+  --radius-pill: 999px;
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  /* Ambient background texture */
+  --bg-dot-color: rgba(255, 255, 255, 0.14);
+  --bg-blob-1: rgba(190, 80, 244, 0.22);
+  --bg-blob-2: rgba(122, 90, 248, 0.16);
 }
 
 [data-theme="light"] {
   --background-color: transparent;
-  --background-image: url("/images/BB2.png");
+  --background-image: radial-gradient(ellipse 1100px 700px at 50% -8%, rgba(126, 34, 206, 0.09), transparent 60%), #f7f6f9;
   --text-color: #333;
   --heading-color: #7e22ce;
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --card-hover-bg: rgba(255, 255, 255, 0.95);
-  --navbar-bg: url("/images/BB2.png") no-repeat center;
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-hover-bg: rgba(255, 255, 255, 0.92);
+  --navbar-bg: rgba(255, 255, 255, 0.65);
   --footer-bg: rgba(255, 255, 255, 0.7);
-  --box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
-  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  --box-shadow: 0 20px 50px -18px rgba(0, 0, 0, 0.18);
+  --card-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.14);
   --toggle-icon: "\f186"; /* moon */
+  --card-border: rgba(0, 0, 0, 0.06);
+
+  --bg-dot-color: rgba(126, 34, 206, 0.1);
+  --bg-blob-1: rgba(190, 80, 244, 0.14);
+  --bg-blob-2: rgba(126, 34, 206, 0.1);
 }
 
 * {
@@ -212,13 +272,43 @@ body {
     background-size: cover;
     background-attachment: fixed;
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    font-weight: bold;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    position: relative;
 }
 
 [data-theme="light"] body {
-  background-image: var(--background-image);
+  background: var(--background-image);
   background-size: cover;
   background-attachment: fixed;
+}
+
+/* Ambient background texture: soft dotted grid + slow-drifting color blobs */
+body::before {
+    content: '';
+    position: fixed;
+    inset: -10%;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle, var(--bg-dot-color) 1px, transparent 1.5px),
+        radial-gradient(620px 520px at 12% 18%, var(--bg-blob-1), transparent 70%),
+        radial-gradient(560px 480px at 88% 78%, var(--bg-blob-2), transparent 70%);
+    background-size: 28px 28px, auto, auto;
+    background-repeat: repeat, no-repeat, no-repeat;
+    animation: driftBg 24s ease-in-out infinite alternate;
+}
+
+@keyframes driftBg {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(2.5%, -2%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before {
+        animation: none;
+    }
 }
 
 .favicon {
@@ -236,7 +326,7 @@ body {
     width: 100%;
     z-index: 999;
     padding: 30px 0;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: var(--font-sans);
     transition: all 0.3s ease;
     background: var(--navbar-bg);
     backdrop-filter: blur(5px);
@@ -274,7 +364,7 @@ body {
 }
 
 [data-theme="light"] .navbar.sticky::before {
-    background: var(--background-image) no-repeat center;
+    background: var(--background-image);
     background-size: cover;
 }
 
@@ -323,8 +413,8 @@ body {
 }
 
 .navbar .menu li a {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 500;
     margin-left: 25px;
     transition: all 0.3s ease;
     color: var(--text-color);
@@ -536,7 +626,7 @@ body {
     height: 100vh; /* Full viewport height */
     color: var(--text-color);
     min-height: 500px; /* Minimum height */
-    font-family: 'Ubuntu', sans-serif;
+    font-family: var(--font-sans);
 }
 
 .home .max-width {
@@ -696,7 +786,7 @@ section {
 }
 
 .about, .services, .skills, .contact, footer {
-    font-family: 'Poppins', sans-serif; /* Font family */
+    font-family: var(--font-sans);
 }
 
 /* Flexbox Layout for Content */
@@ -719,7 +809,7 @@ section .title {
     font-weight: 700; /* Title font weight */
     margin-bottom: 60px; /* Reduced margin since subtitle is gone */
     padding-bottom: 10px; /* Reduced padding since subtitle is gone */
-    font-family: 'Ubuntu', sans-serif; /* Title font family */
+    font-family: var(--font-sans); /* Title font family */
 }
 
 section .title::before {
@@ -787,21 +877,22 @@ section .title::after {
 }
 
 .about .about-content .right a {
-    display: inline-block; /* Inline block for links */
-    background: none; /* No background */
-    color: var(--heading-color); /* Link color */
-    margin-top: 20px; /* Space above link */
-    font-size: 20px; /* Link font size */
-    font-weight: 500; /* Link font weight */
-    padding: 5px 30px; /* Padding for link */
-    border-radius: 6px; /* Rounded corners */
-    border: 2px solid var(--heading-color); /* Border */
-    transition: all 0.3s ease; /* Transition effect */
+    display: inline-block;
+    background: none;
+    color: var(--heading-color);
+    margin-top: 20px;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 12px 32px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--heading-color);
+    transition: all 0.3s ease;
 }
 
 .about .about-content .right a:hover {
-    color: var(--text-color); /* Change color on hover */
-    background: none; /* No background */
+    color: #fff;
+    background: var(--heading-color);
+    transform: translateY(-2px);
 }
 
 /* Media Queries for Responsiveness */
@@ -1138,12 +1229,14 @@ section .title::after {
     flex: 1 1 300px;
     max-width: 350px;
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 25px;
+    border-radius: var(--radius-card);
+    padding: 28px;
     box-shadow: var(--card-shadow);
     transition: all 0.4s ease;
-    border-left: 3px solid rgba(190, 80, 244, 0.6);
-    border-bottom: 3px solid rgba(190, 80, 244, 0.6);
+    border: 1px solid var(--card-border);
+    border-top: 2px solid rgba(190, 80, 244, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     overflow: hidden;
     position: relative;
 }
@@ -1162,9 +1255,8 @@ section .title::after {
 .skill-category:hover {
     transform: translateY(-8px);
     background: var(--card-hover-bg);
-    box-shadow: 0 10px 30px rgba(190, 80, 244, 0.25);
-    border-left: 3px solid rgba(190, 80, 244, 1);
-    border-bottom: 3px solid rgba(190, 80, 244, 1);
+    box-shadow: 0 25px 50px -15px rgba(190, 80, 244, 0.3);
+    border-top: 2px solid rgba(190, 80, 244, 1);
 }
 
 .skill-category h3 {
@@ -1501,7 +1593,7 @@ section .title::after {
     padding: 0 15px; /* Padding for fields */
     font-size: 17px; /* Font size */
     background: none; /* No background */
-    font-family: 'Poppins', sans-serif; /* Font family */
+    font-family: var(--font-sans); /* Font family */
 }
 
 .contact .right form .textarea textarea {
@@ -1907,7 +1999,7 @@ footer i:hover {
     background-size: cover;
     padding: 50px 0;
     color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
 }
 
 /* Experience subtitle removed */
@@ -1970,10 +2062,13 @@ footer i:hover {
 }
 
 .timeline-content {
-    padding: 20px 30px;
+    padding: 24px 32px;
     background: var(--card-bg);
-    border-radius: 6px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     transition: all 0.3s ease;
 }
 
@@ -2083,7 +2178,7 @@ footer i:hover {
     background-size: cover;
     padding: 50px 0;
     color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
 }
 
 /* Education subtitle removed */
@@ -2100,9 +2195,12 @@ footer i:hover {
     max-width: 900px;
     margin: 0 auto;
     background: var(--card-bg);
-    border-radius: 15px;
-    padding: 30px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--card-border);
+    padding: 34px;
     box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
@@ -2363,7 +2461,7 @@ footer i:hover {
     background-size: cover;
     padding: 50px 0 100px;
     color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
 }
 
 /* Projects subtitle removed */
@@ -2378,9 +2476,12 @@ footer i:hover {
 .project-card {
     display: flex;
     background: var(--card-bg);
-    border-radius: 15px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--card-border);
     overflow: hidden;
     box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     transition: all 0.4s ease;
 }
 
@@ -2709,11 +2810,12 @@ footer i:hover {
 }
 
 h1, h2, h3, h4, h5, .text-2, .text-3, section .title {
-    font-weight: 700; /* Extra bold for headings */
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 p, .paragraph, .paragraph-2, .paragraph-3, .skill-item span, .timeline-content p, .project-info p, .sub-title, .contact-content .info .head {
-    font-weight: 600; /* Semi-bold for paragraphs and other text */
+    font-weight: 400;
 }
 
 .navbar-controls {
