@@ -166,7 +166,7 @@
 
 :root {
   /* Dark Mode (Default) */
-  --background: url("images/BB.png") no-repeat center;
+  --background: url("/images/BB.png") no-repeat center;
   --text-color: white;
   --heading-color: #be50f4;
   --card-bg: rgba(255, 255, 255, 0.1);
@@ -180,12 +180,12 @@
 
 [data-theme="light"] {
   --background-color: transparent;
-  --background-image: url("images/BB2.png");
+  --background-image: url("/images/BB2.png");
   --text-color: #333;
   --heading-color: #7e22ce;
   --card-bg: rgba(255, 255, 255, 0.8);
   --card-hover-bg: rgba(255, 255, 255, 0.95);
-  --navbar-bg: url("images/BB2.png") no-repeat center;
+  --navbar-bg: url("/images/BB2.png") no-repeat center;
   --footer-bg: rgba(255, 255, 255, 0.7);
   --box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
   --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
@@ -2705,7 +2705,7 @@ footer i:hover {
 }
 
 [data-theme="light"] .logo img {
-  content: url("images/LOGO01.png");
+  content: url("/images/LOGO01.png");
 }
 
 h1, h2, h3, h4, h5, .text-2, .text-3, section .title {
