@@ -74,7 +74,13 @@ export default function AiAssistant() {
       });
 
       if (!res.ok || !res.body) {
-        const msg = res.status === 429 ? a.rateLimit : a.error;
+        let msg = res.status === 429 ? a.rateLimit : a.error;
+        try {
+          const body = await res.clone().json();
+          if (body?.detail) msg = `${msg}\n\n\`${body.detail}\``;
+        } catch {
+          /* non-JSON error body */
+        }
         setMessages((prev) => {
           const next = [...prev];
           next[next.length - 1] = { role: 'assistant', content: msg };

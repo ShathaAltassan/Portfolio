@@ -6,12 +6,16 @@
  *   GEMINI_API_KEY          (required)  -> https://aistudio.google.com/apikey
  *   SUPABASE_URL            (optional)  -> logging off if unset
  *   SUPABASE_SERVICE_KEY    (optional)  -> service_role key
- *   GEMINI_MODEL            (optional)  -> defaults to gemini-2.5-flash
+ *   GEMINI_MODEL            (optional)  -> comma list, tried in order
+ *                                        (default: gemini-2.5-flash, then fallbacks)
  */
 
 import { SYSTEM_PROMPT } from './persona.mjs';
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const MODELS = (process.env.GEMINI_MODEL || 'gemini-2.5-flash,gemini-2.0-flash,gemini-flash-latest,gemini-1.5-flash')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -129,29 +133,53 @@ export default async (request, context) => {
   const country = context?.geo?.country?.code || null;
   const contents = toGeminiContents(messages);
 
-  const upstream = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents,
-        generationConfig: { temperature: 0.6, topP: 0.95, maxOutputTokens: 900 },
-        safetySettings: [
-          'HARM_CATEGORY_HARASSMENT',
-          'HARM_CATEGORY_HATE_SPEECH',
-          'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-          'HARM_CATEGORY_DANGEROUS_CONTENT',
-        ].map((category) => ({ category, threshold: 'BLOCK_ONLY_HIGH' })),
-      }),
-    },
-  );
+  const requestBody = JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    contents,
+    generationConfig: { temperature: 0.6, topP: 0.95, maxOutputTokens: 900 },
+    safetySettings: [
+      'HARM_CATEGORY_HARASSMENT',
+      'HARM_CATEGORY_HATE_SPEECH',
+      'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+      'HARM_CATEGORY_DANGEROUS_CONTENT',
+    ].map((category) => ({ category, threshold: 'BLOCK_ONLY_HIGH' })),
+  });
 
-  if (!upstream.ok || !upstream.body) {
-    const detail = await upstream.text().catch(() => '');
-    console.error('gemini error', upstream.status, detail.slice(0, 500));
-    return json(502, { error: 'The assistant is having a moment. Try again shortly.' });
+  let upstream = null;
+  let lastDetail = '';
+  for (const model of MODELS) {
+    let res;
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
+        { method: 'POST', headers: { 'content-type': 'application/json' }, body: requestBody },
+      );
+    } catch (err) {
+      lastDetail = `network: ${err?.message || err}`;
+      continue;
+    }
+    if (res.ok && res.body) {
+      upstream = res;
+      break;
+    }
+    const text = await res.text().catch(() => '');
+    let msg = text.slice(0, 300);
+    try {
+      msg = JSON.parse(text)?.error?.message || msg;
+    } catch {
+      /* keep raw */
+    }
+    lastDetail = `${model} → ${res.status} ${msg}`;
+    console.error('gemini error', lastDetail);
+    // 404/400 = bad model or bad key: try the next model. Others: stop.
+    if (res.status !== 404 && res.status !== 400) break;
+  }
+
+  if (!upstream) {
+    return json(502, {
+      error: 'The assistant is having a moment. Try again shortly.',
+      detail: lastDetail || 'no response from Gemini',
+    });
   }
 
   const encoder = new TextEncoder();
