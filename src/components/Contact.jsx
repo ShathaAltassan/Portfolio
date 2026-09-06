@@ -1,84 +1,86 @@
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import Reveal from './Reveal.jsx';
+import SectionHead from './SectionHead.jsx';
+
 export default function Contact() {
+  const { t } = useLanguage();
+
+  const rows = [
+    {
+      k: 'Email',
+      v: 'shatha.altassan@outlook.com',
+      href: 'mailto:shatha.altassan@outlook.com',
+      icon: 'fas fa-envelope',
+    },
+    {
+      k: 'GitHub',
+      v: 'github.com/ShathaAltassan',
+      href: 'https://github.com/ShathaAltassan',
+      icon: 'fab fa-github',
+    },
+    {
+      k: 'LinkedIn',
+      v: t.contact.linkedinLabel,
+      href: 'https://www.linkedin.com/in/shatha-altassan/',
+      icon: 'fab fa-linkedin-in',
+    },
+    {
+      k: 'WhatsApp',
+      v: '+966 50 519 1283',
+      href: 'https://wa.me/966505191283',
+      icon: 'fab fa-whatsapp',
+    },
+    {
+      k: t.contact.location,
+      v: t.contact.location,
+      href: null,
+      icon: 'fas fa-map-marker-alt',
+    },
+  ];
+
   return (
     <section className="contact" id="contact">
-      <div className="max-width">
-        <h2 className="title" data-aos="fade-down">Contact Me</h2>
-        <div className="contact-content" style={{ alignItems: 'left' }}>
-          <div className="column left" data-aos="fade-right">
-            <img src="/images/cont.png" alt="" />
-          </div>
-          <div className="column left" data-aos="flip-left">
-            <div className="text">Let's Get in Touch</div>
-            <p className="paragraph-3">
-              I'm always excited to connect and explore new opportunities! Whether you have a project in mind, a
-              question about my work, or if you're interested in discussing potential job opportunities, please
-              don't hesitate to reach out. Let's collaborate and create something amazing together!
-            </p>
-            <div className="icons">
-              <div className="row">
-                <img src="/images/Location.png" alt="Location" style={{ width: 30, marginRight: 10 }} />
-                <div className="info">
-                  <div className="head" />
-                  <div className="sub-title" style={{ fontSize: 19 }}>
-                    Saudi Arabia - Al-Qassim
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <img src="/images/email icon.png" alt="Email" style={{ width: 30, height: 30, marginRight: 10 }} />
-                <div className="info">
-                  <div className="head" />
-                  <div className="sub-title">
-                    <a href="mailto:shatha.altassan@outlook.com" style={{ fontSize: 19 }}>
-                      shatha.altassan@outlook.com
-                    </a>
-                  </div>
-                </div>
-              </div>
+      <div className="shell">
+        <SectionHead eyebrow={t.ui.eyebrows.contact} title={t.contact.title} />
 
-              <div className="row">
-                <img src="/images/phone icon.png" alt="Phone" style={{ width: 30, height: 30, marginRight: 10 }} />
-                <div className="info">
-                  <div className="head" />
-                  <div className="sub-title">
-                    <a href="tel:+966505191283" style={{ fontSize: 19 }}>
-                      +966505191283
-                    </a>
-                  </div>
-                </div>
-              </div>
+        <div className="contact-layout">
+          <Reveal className="contact-intro">
+            <p className="lead">{t.contact.heading}</p>
+            <p>{t.contact.paragraph}</p>
+          </Reveal>
 
-              <div className="row">
-                <img
-                  src="/images/linkedin icon.png"
-                  alt="LinkedIn"
-                  style={{ width: 30, height: 30, marginRight: 10 }}
-                />
-                <div className="info">
-                  <div className="head" />
-                  <div className="sub-title">
-                    <a href="https://www.linkedin.com/in/shatha-altassan/" target="_blank" rel="noreferrer" style={{ fontSize: 19 }}>
-                      LinkedIn-Shatha-Altasan
-                    </a>
-                    <br />
-                  </div>
+          <Reveal className="contact-list" delay={100}>
+            {rows.map((row) =>
+              row.href ? (
+                <a
+                  key={row.k}
+                  className="contact-row"
+                  href={row.href}
+                  target={row.href.startsWith('http') ? '_blank' : undefined}
+                  rel={row.href.startsWith('http') ? 'noreferrer' : undefined}
+                >
+                  <span className="ico">
+                    <i className={row.icon} />
+                  </span>
+                  <span className="label">
+                    <span className="k">{row.k}</span>
+                    <span className="v">{row.v}</span>
+                  </span>
+                  <i className="fas fa-arrow-right arrow" />
+                </a>
+              ) : (
+                <div key={row.k} className="contact-row">
+                  <span className="ico">
+                    <i className={row.icon} />
+                  </span>
+                  <span className="label">
+                    <span className="k">{t.ui.locationLabel}</span>
+                    <span className="v">{row.v}</span>
+                  </span>
                 </div>
-              </div>
-
-              <div className="row">
-                <img src="/images/WhatsApp.png" alt="WhatsApp" style={{ width: 40, marginRight: -8 }} />
-                <div className="info">
-                  <div className="head" />
-                  <div className="sub-title">
-                    <a href="https://wa.me/966505191283" target="_blank" rel="noreferrer" style={{ fontSize: 19 }}>
-                      WhatsApp
-                    </a>
-                    <br />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+              ),
+            )}
+          </Reveal>
         </div>
       </div>
     </section>

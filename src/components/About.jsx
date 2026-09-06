@@ -1,46 +1,32 @@
-import { useEffect, useRef } from 'react';
-import Typed from 'typed.js';
+import { useLanguage } from '../i18n/LanguageContext.jsx';
+import Reveal from './Reveal.jsx';
+import SectionHead from './SectionHead.jsx';
+
+const RESUME_URL =
+  'https://drive.google.com/drive/folders/1-CoSev9pBAnSc1W-nEqfbD7AAq5TWX2_?usp=drive_link';
 
 export default function About() {
-  const typedRef = useRef(null);
-
-  useEffect(() => {
-    const typed = new Typed(typedRef.current, {
-      strings: ['Shatha Altasan'],
-      typeSpeed: 100,
-      backSpeed: 60,
-      loop: true,
-    });
-    return () => typed.destroy();
-  }, []);
+  const { t } = useLanguage();
 
   return (
     <section className="about" id="about">
-      <div className="max-width">
-        <h2 className="title" data-aos="fade-down">About Me</h2>
-        <div className="about-content">
-          <div className="column left" data-aos="fade-right">
+      <div className="shell">
+        <SectionHead eyebrow={t.ui.eyebrows.about} title={t.about.title} />
+
+        <div className="about-grid">
+          <Reveal className="about-portrait">
             <img src="/images/about.png" alt="" />
-          </div>
-          <div className="column right" data-aos="fade-up">
-            <div className="text">
-              I'm <span ref={typedRef} className="typing-2" />
-            </div>
-            <p className="paragraph">
-              Full Stack Developer with a Computer Science degree, specializing in creating dynamic, responsive web
-              applications. Experienced in both front-end and back-end technologies, including React.js, FastAPI,
-              Flask, and database systems like PostgreSQL and MongoDB. Committed to clean code, intuitive UI/UX
-              design, and efficient development practices. Passionate about leveraging technology to create
-              impactful digital solutions while continuously expanding my technical expertise.
+          </Reveal>
+
+          <Reveal className="about-body" delay={100}>
+            <p className="lead">
+              {t.about.introPrefix} <span>{t.hero.name}</span>.
             </p>
-            <a
-              href="https://drive.google.com/drive/folders/1-CoSev9pBAnSc1W-nEqfbD7AAq5TWX2_?usp=drive_link"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Download Resume
+            <p>{t.about.paragraph}</p>
+            <a className="btn-ghost" href={RESUME_URL} target="_blank" rel="noreferrer">
+              <i className="fas fa-arrow-down" /> {t.about.resume}
             </a>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

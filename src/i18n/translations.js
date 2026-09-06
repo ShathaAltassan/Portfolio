@@ -1,0 +1,409 @@
+export const translations = {
+  en: {
+    nav: {
+      home: 'Home',
+      about: 'About',
+      experience: 'Experience',
+      education: 'Education',
+      projects: 'Projects',
+      skills: 'Skills',
+      contact: 'Contact',
+    },
+    ui: {
+      resume: 'Résumé',
+      viewWork: 'View my work',
+      getInTouch: 'Get in touch',
+      locationLabel: 'Location',
+      githubActivity: 'GitHub Activity',
+      contributionsLast: 'contributions in the last year',
+      less: 'Less',
+      more: 'More',
+      eyebrows: {
+        hero: "Hello, I'm",
+        about: 'About',
+        experience: 'Journey',
+        education: 'Education',
+        projects: 'Selected Work',
+        skills: 'Technologies',
+        contact: 'Contact',
+      },
+    },
+    hero: {
+      name: 'Shatha Altasan',
+      typedRoles: ['Full Stack Developer', 'React & FastAPI', 'Clean, responsive UI'],
+      tagline: ['Creating efficient, dynamic, and responsive web solutions.'],
+    },
+    about: {
+      title: 'About Me',
+      introPrefix: "I'm",
+      typedName: ['Shatha Altasan'],
+      paragraph:
+        'Full Stack Developer with a Computer Science degree, specializing in creating dynamic, responsive web applications. Experienced in both front-end and back-end technologies, including React.js, FastAPI, Flask, and database systems like PostgreSQL and MongoDB. Committed to clean code, intuitive UI/UX design, and efficient development practices. Passionate about leveraging technology to create impactful digital solutions while continuously expanding my technical expertise.',
+      resume: 'Download Resume',
+    },
+    experience: {
+      title: 'My Experience',
+      items: [
+        {
+          aos: 'fade-right',
+          title: 'Teaching Assistant',
+          org: 'Qassim University | Saudi Arabia',
+          period: 'Jan 2025 – Present',
+          points: [
+            'Assisted in course instruction by clarifying concepts and supporting faculty members.',
+            'Contributed to an effective learning environment by enhancing student understanding.',
+            'Delivered course content and participated in curriculum development aligned with educational quality standards.',
+          ],
+        },
+        {
+          aos: 'fade-left',
+          title: 'Full Stack Developer',
+          org: 'Inteli Dexer Company | Saudi Arabia',
+          period: 'Jan 2025 – Present',
+          points: [
+            'Promoted to Full Stack Developer role, handling both front-end and back-end development.',
+            'Develop and maintain web applications using React.js for front-end and FastAPI for back-end services.',
+            'Implement and manage databases using PostgreSQL with pgAdmin, and containerize applications using Docker.',
+            'Collaborate in a remote environment, following version control best practices with Git and GitHub.',
+            'Design and implement RESTful APIs, ensuring seamless integration between front-end and back-end services.',
+          ],
+        },
+        {
+          aos: 'fade-right',
+          title: 'Internship, Electronics and Power System Engineer',
+          org: 'Smart Methods Company | Saudi Arabia',
+          period: 'June 2023 – Aug 2023',
+          points: [
+            'Designed and programmed electrical circuits for robotic components using Arduino and C++, enhancing the efficiency and performance of robotic systems.',
+            'Applied advanced design techniques for high reliability and efficiency.',
+            'Collaborated with cross-functional teams to ensure timely delivery and technical compliance.',
+          ],
+        },
+      ],
+    },
+    education: {
+      title: 'My Education',
+      degree: 'Bachelor degree in Computer Science',
+      org: 'Qassim University | Saudi Arabia',
+      period: '2019 - 2024',
+      gpaLine1: 'GPA: 4.65/5 (Excellent)',
+      gpaLine2: 'Graduated with honors',
+      achievement: 'Senior Project: Face Detection & Recognition System',
+    },
+    projects: {
+      title: 'My Projects',
+      codeLabel: 'View Code',
+      demoLabel: 'Live Demo',
+      items: [
+        {
+          id: 'face-detection-project',
+          img: '/images/P1.png',
+          alt: 'Face Detection & Recognition System',
+          type: 'AI & Computer Vision',
+          title: 'Face Detection & Recognition System',
+          description:
+            'Developed a Python-based system using InceptionResNetV1 for Facial Recognition and MTCNN for Face Detection to count and identify known and unknown individuals in real-time video streams. Implemented real-time database connectivity for updating and querying face recognition results.',
+          code: 'https://github.com/ShathaAltassan/FDR-SYSTEM-',
+          demo: 'https://youtu.be/LlPWWpNDRnc',
+        },
+        {
+          img: '/images/GamerX.png',
+          alt: 'GamerX Online Gaming Store',
+          type: 'Web Development',
+          title: 'GamerX - React.js Gaming Store',
+          description:
+            'Developed GamerX, an online gaming store using React.js, showcasing a dynamic and user-friendly interface. The project integrates advanced state management for seamless functionality, modular components for scalability, and an optimized browsing experience designed for gaming enthusiasts.',
+          code: 'https://github.com/ShathaAltassan/Gamer-X',
+          demo: '#',
+        },
+        {
+          img: '/images/P2.png',
+          alt: 'Pong Game Project',
+          type: 'Game Development',
+          title: 'Pong Game Project',
+          description:
+            'Created a Pong game in C# with Windows Forms, featuring paddle and ball movement, collision detection, scoring, and optimized for smooth gameplay. This project was part of a visual programming course.',
+          code: 'https://github.com/ShathaAltassan/PongGame',
+          demo: 'https://github.com/ShathaAltassan/PongGame',
+        },
+      ],
+    },
+    skills: {
+      title: 'My Skills',
+      categories: [
+        {
+          title: 'Full Stack Development',
+          items: [
+            { icon: 'fab fa-html5', label: 'HTML5' },
+            { icon: 'fab fa-css3-alt', label: 'CSS3' },
+            { icon: 'fab fa-js', label: 'JavaScript' },
+            { icon: 'fab fa-react', label: 'React.js' },
+            { icon: 'fab fa-bootstrap', label: 'Bootstrap' },
+            { icon: 'fas fa-server', label: 'FastAPI' },
+            { img: '/images/sql.png', label: 'PostgreSQL/pgAdmin' },
+            { icon: 'fas fa-leaf', label: 'MongoDB' },
+            { img: '/images/flask.png', label: 'Flask' },
+            { icon: 'fab fa-docker', label: 'Docker' },
+          ],
+        },
+        {
+          title: 'Programming & Tools',
+          items: [
+            { icon: 'fab fa-python', label: 'Python' },
+            { icon: 'fab fa-java', label: 'Java' },
+            { icon: 'fas fa-code', label: 'C#' },
+            { icon: 'fas fa-file-code', label: 'C/C++' },
+            { icon: 'fab fa-git-alt', label: 'Git' },
+            { icon: 'fab fa-github', label: 'GitHub' },
+            { icon: 'fas fa-terminal', label: 'Command Line' },
+          ],
+        },
+        {
+          title: 'AI & Computer Vision',
+          items: [
+            { icon: 'fas fa-brain', label: 'Machine Learning' },
+            { icon: 'fas fa-eye', label: 'Computer Vision' },
+            { icon: 'fas fa-camera', label: 'OpenCV' },
+            { icon: 'fas fa-fire', label: 'PyTorch' },
+            { icon: 'fas fa-microchip', label: 'Deep Learning' },
+          ],
+        },
+        {
+          title: 'Development Expertise',
+          items: [
+            { icon: 'fas fa-project-diagram', label: 'Single-Page Applications' },
+            { icon: 'fas fa-code-branch', label: 'Component Architecture' },
+            { icon: 'fas fa-random', label: 'State Management' },
+            { icon: 'fas fa-mobile-alt', label: 'Responsive Design' },
+          ],
+        },
+        {
+          title: 'Soft Skills',
+          items: [
+            { icon: 'fas fa-users', label: 'Teamwork' },
+            { icon: 'fas fa-comments', label: 'Communication' },
+            { icon: 'fas fa-lightbulb', label: 'Problem Solving' },
+            { icon: 'fas fa-tasks', label: 'Time Management' },
+          ],
+        },
+      ],
+    },
+    contact: {
+      title: 'Contact Me',
+      heading: "Let's Get in Touch",
+      paragraph:
+        "I'm always excited to connect and explore new opportunities! Whether you have a project in mind, a question about my work, or if you're interested in discussing potential job opportunities, please don't hesitate to reach out. Let's collaborate and create something amazing together!",
+      location: 'Saudi Arabia - Al-Qassim',
+      linkedinLabel: 'LinkedIn-Shatha-Altasan',
+      whatsappLabel: 'WhatsApp',
+    },
+    footer: {
+      createdBy: 'Created By',
+      rights: 'All rights reserved.',
+    },
+  },
+
+  ar: {
+    nav: {
+      home: 'الرئيسية',
+      about: 'نبذة عني',
+      experience: 'الخبرات',
+      education: 'التعليم',
+      projects: 'المشاريع',
+      skills: 'المهارات',
+      contact: 'تواصل معي',
+    },
+    ui: {
+      resume: 'السيرة الذاتية',
+      viewWork: 'شوفي أعمالي',
+      getInTouch: 'تواصلي معي',
+      locationLabel: 'الموقع',
+      githubActivity: 'نشاط GitHub',
+      contributionsLast: 'مساهمة خلال السنة الماضية',
+      less: 'أقل',
+      more: 'أكثر',
+      eyebrows: {
+        hero: 'أهلاً، أنا',
+        about: 'نبذة',
+        experience: 'المسيرة',
+        education: 'التعليم',
+        projects: 'مختارات من العمل',
+        skills: 'التقنيات',
+        contact: 'تواصل',
+      },
+    },
+    hero: {
+      name: 'شذى الطاسان',
+      typedRoles: ['مطوّرة Full Stack', 'React و FastAPI', 'واجهات نظيفة ومتجاوبة'],
+      tagline: ['أصمّم حلول ويب فعّالة وديناميكية ومتجاوبة.'],
+    },
+    about: {
+      title: 'نبذة عني',
+      introPrefix: 'أنا',
+      typedName: ['شذى الطاسان'],
+      paragraph:
+        'مطوّرة Full Stack حاصلة على درجة البكالوريوس في علوم الحاسب، متخصصة في بناء تطبيقات ويب ديناميكية ومتجاوبة. لدي خبرة في تقنيات الواجهة الأمامية والخلفية، منها React.js وFastAPI وFlask، وأنظمة قواعد بيانات مثل PostgreSQL وMongoDB. ملتزمة بكتابة كود نظيف، وتصميم UI/UX بديهي، وممارسات تطوير فعّالة. شغوفة بتوظيف التقنية لخلق حلول رقمية ذات أثر حقيقي، مع تطوير مستمر لخبرتي التقنية.',
+      resume: 'تحميل السيرة الذاتية',
+    },
+    experience: {
+      title: 'خبراتي',
+      items: [
+        {
+          aos: 'fade-left',
+          title: 'معيدة',
+          org: 'جامعة القصيم | السعودية',
+          period: 'يناير 2025 – حتى الآن',
+          points: [
+            'ساهمت في تدريس المقررات عبر توضيح المفاهيم ودعم أعضاء هيئة التدريس.',
+            'ساهمت في تهيئة بيئة تعليمية فعّالة من خلال تعزيز فهم الطلاب.',
+            'قدّمت محتوى المقررات وشاركت في تطوير المناهج بما يتوافق مع معايير الجودة التعليمية.',
+          ],
+        },
+        {
+          aos: 'fade-right',
+          title: 'مطوّرة Full Stack',
+          org: 'شركة Inteli Dexer | السعودية',
+          period: 'يناير 2025 – حتى الآن',
+          points: [
+            'تمت ترقيتي لدور مطوّرة Full Stack، بمسؤولية تطوير الواجهة الأمامية والخلفية.',
+            'أطوّر وأصون تطبيقات ويب باستخدام React.js للواجهة الأمامية وFastAPI لخدمات الخلفية.',
+            'أدير قواعد البيانات باستخدام PostgreSQL مع pgAdmin، وأحوّل التطبيقات إلى حاويات باستخدام Docker.',
+            'أعمل ضمن فريق عن بُعد، وأتّبع أفضل ممارسات التحكم بالإصدارات باستخدام Git وGitHub.',
+            'أصمّم وأبني RESTful APIs، لضمان تكامل سلس بين خدمات الواجهة الأمامية والخلفية.',
+          ],
+        },
+        {
+          aos: 'fade-left',
+          title: 'تدريب، مهندسة إلكترونيات وأنظمة طاقة',
+          org: 'شركة Smart Methods | السعودية',
+          period: 'يونيو 2023 – أغسطس 2023',
+          points: [
+            'صمّمت وبرمجت دوائر كهربائية لمكوّنات روبوتية باستخدام Arduino وC++، لتحسين كفاءة وأداء الأنظمة الروبوتية.',
+            'طبّقت تقنيات تصميم متقدمة لضمان موثوقية وكفاءة عالية.',
+            'تعاونت مع فرق متعددة التخصصات لضمان التسليم في الوقت المحدد والالتزام التقني.',
+          ],
+        },
+      ],
+    },
+    education: {
+      title: 'تعليمي',
+      degree: 'بكالوريوس علوم الحاسب',
+      org: 'جامعة القصيم | السعودية',
+      period: '2019 - 2024',
+      gpaLine1: 'المعدل: 4.65/5 (ممتاز)',
+      gpaLine2: 'تخرّجت بمرتبة الشرف',
+      achievement: 'مشروع التخرج: نظام كشف والتعرّف على الوجوه',
+    },
+    projects: {
+      title: 'مشاريعي',
+      codeLabel: 'عرض الكود',
+      demoLabel: 'عرض تجريبي',
+      items: [
+        {
+          id: 'face-detection-project',
+          img: '/images/P1.png',
+          alt: 'نظام كشف والتعرّف على الوجوه',
+          type: 'ذكاء اصطناعي ورؤية حاسوبية',
+          title: 'نظام كشف والتعرّف على الوجوه',
+          description:
+            'طوّرت نظامًا بلغة Python يعتمد على InceptionResNetV1 للتعرّف على الوجوه وMTCNN لكشف الوجوه، لعدّ وتمييز الأشخاص المعروفين وغير المعروفين ضمن بث فيديو مباشر. ونفّذت ربطًا مباشرًا بقاعدة البيانات لتحديث نتائج التعرّف على الوجوه والاستعلام عنها.',
+          code: 'https://github.com/ShathaAltassan/FDR-SYSTEM-',
+          demo: 'https://youtu.be/LlPWWpNDRnc',
+        },
+        {
+          img: '/images/GamerX.png',
+          alt: 'متجر GamerX للألعاب',
+          type: 'تطوير الويب',
+          title: 'GamerX - متجر ألعاب بـ React.js',
+          description:
+            'طوّرت GamerX، متجرًا إلكترونيًا للألعاب باستخدام React.js، بواجهة ديناميكية وسهلة الاستخدام. يعتمد المشروع على إدارة حالة متقدمة لضمان عمل سلس، ومكوّنات معيارية قابلة للتوسّع، وتجربة تصفّح محسّنة مصمّمة لعشّاق الألعاب.',
+          code: 'https://github.com/ShathaAltassan/Gamer-X',
+          demo: '#',
+        },
+        {
+          img: '/images/P2.png',
+          alt: 'مشروع لعبة Pong',
+          type: 'تطوير الألعاب',
+          title: 'مشروع لعبة Pong',
+          description:
+            'طوّرت لعبة Pong بلغة C# باستخدام Windows Forms، تتضمّن حركة المضرب والكرة، وكشف الاصطدامات، واحتساب النقاط، مع تحسين الأداء لتجربة لعب سلسة. كان هذا المشروع جزءًا من مقرر البرمجة المرئية.',
+          code: 'https://github.com/ShathaAltassan/PongGame',
+          demo: 'https://github.com/ShathaAltassan/PongGame',
+        },
+      ],
+    },
+    skills: {
+      title: 'مهاراتي',
+      categories: [
+        {
+          title: 'تطوير Full Stack',
+          items: [
+            { icon: 'fab fa-html5', label: 'HTML5' },
+            { icon: 'fab fa-css3-alt', label: 'CSS3' },
+            { icon: 'fab fa-js', label: 'JavaScript' },
+            { icon: 'fab fa-react', label: 'React.js' },
+            { icon: 'fab fa-bootstrap', label: 'Bootstrap' },
+            { icon: 'fas fa-server', label: 'FastAPI' },
+            { img: '/images/sql.png', label: 'PostgreSQL/pgAdmin' },
+            { icon: 'fas fa-leaf', label: 'MongoDB' },
+            { img: '/images/flask.png', label: 'Flask' },
+            { icon: 'fab fa-docker', label: 'Docker' },
+          ],
+        },
+        {
+          title: 'البرمجة والأدوات',
+          items: [
+            { icon: 'fab fa-python', label: 'Python' },
+            { icon: 'fab fa-java', label: 'Java' },
+            { icon: 'fas fa-code', label: 'C#' },
+            { icon: 'fas fa-file-code', label: 'C/C++' },
+            { icon: 'fab fa-git-alt', label: 'Git' },
+            { icon: 'fab fa-github', label: 'GitHub' },
+            { icon: 'fas fa-terminal', label: 'سطر الأوامر' },
+          ],
+        },
+        {
+          title: 'الذكاء الاصطناعي والرؤية الحاسوبية',
+          items: [
+            { icon: 'fas fa-brain', label: 'تعلّم آلي' },
+            { icon: 'fas fa-eye', label: 'رؤية حاسوبية' },
+            { icon: 'fas fa-camera', label: 'OpenCV' },
+            { icon: 'fas fa-fire', label: 'PyTorch' },
+            { icon: 'fas fa-microchip', label: 'تعلّم عميق' },
+          ],
+        },
+        {
+          title: 'خبرات تطويرية',
+          items: [
+            { icon: 'fas fa-project-diagram', label: 'تطبيقات الصفحة الواحدة' },
+            { icon: 'fas fa-code-branch', label: 'معمارية المكوّنات' },
+            { icon: 'fas fa-random', label: 'إدارة الحالة' },
+            { icon: 'fas fa-mobile-alt', label: 'تصميم متجاوب' },
+          ],
+        },
+        {
+          title: 'المهارات الشخصية',
+          items: [
+            { icon: 'fas fa-users', label: 'العمل الجماعي' },
+            { icon: 'fas fa-comments', label: 'التواصل' },
+            { icon: 'fas fa-lightbulb', label: 'حل المشكلات' },
+            { icon: 'fas fa-tasks', label: 'إدارة الوقت' },
+          ],
+        },
+      ],
+    },
+    contact: {
+      title: 'تواصل معي',
+      heading: 'لنتواصل',
+      paragraph:
+        'يسعدني دائمًا التواصل واستكشاف فرص جديدة! سواء كان لديك مشروع في بالك، أو سؤال عن أعمالي، أو تودّ مناقشة فرصة عمل، لا تتردد بالتواصل. لنتعاون معًا ونصنع شيئًا رائعًا!',
+      location: 'السعودية - القصيم',
+      linkedinLabel: 'LinkedIn - شذى الطاسان',
+      whatsappLabel: 'WhatsApp',
+    },
+    footer: {
+      createdBy: 'تصميم وتطوير',
+      rights: 'جميع الحقوق محفوظة.',
+    },
+  },
+};

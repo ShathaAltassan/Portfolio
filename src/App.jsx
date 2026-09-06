@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import AOS from 'aos';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import Navbar from './components/Navbar.jsx';
 import ScrollToTopButton from './components/ScrollToTopButton.jsx';
@@ -24,28 +23,27 @@ export default function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  useEffect(() => {
-    AOS.init({ easing: 'ease-in', delay: 100, duration: 300, offset: 100 });
-    const refresh = () => AOS.refresh();
-    window.addEventListener('load', refresh);
-    return () => window.removeEventListener('load', refresh);
-  }, []);
-
   const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
 
   return (
     <>
+      <div className="sky" aria-hidden="true" />
+      <div className="moon" aria-hidden="true" />
+
       <LoadingScreen />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <ScrollToTopButton />
-      <Home />
-      <br />
-      <About />
-      <Experience />
-      <Education />
-      <Projects />
-      <Skills />
-      <Contact />
+
+      <main>
+        <Home />
+        <About />
+        <Experience />
+        <Education />
+        <Projects />
+        <Skills />
+        <Contact />
+      </main>
+
       <Footer theme={theme} />
     </>
   );
