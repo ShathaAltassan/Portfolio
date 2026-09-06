@@ -1666,90 +1666,100 @@ footer a:hover {
 }
 
 /* ============================================================
-   Loading screen
+   Intro screen — motto + progress, then wipes away
    ============================================================ */
-.loading-screen {
+.intro {
     position: fixed;
     inset: 0;
+    z-index: 9999;
     background: var(--bg);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 30px;
-    z-index: 9999;
-    transition: opacity 0.7s ease, visibility 0.7s ease;
+    justify-content: center;
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
 
-.loading-screen.fade-out {
+.intro--exit {
     opacity: 0;
-    visibility: hidden;
+    transform: translateY(-1.5%);
+    pointer-events: none;
 }
 
-.particles { display: none; }
-
-.logo-container {
-    position: relative;
-    width: 120px;
-    height: 120px;
+.intro-phrase {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.12em;
+    text-align: center;
+    padding: 0 24px;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4.6vw, 2.7rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: var(--text);
 }
 
-.logo-container img {
-    width: 88px;
-    height: auto;
-    object-fit: contain;
-    animation: pulse 2.4s ease-in-out infinite;
+[dir="rtl"] .intro-phrase {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.4;
+    font-feature-settings: "swsh" 1, "calt" 1;
 }
 
-.logo-container::before {
-    content: '';
+.intro-line {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.55em);
+    animation: introLineIn 0.75s var(--ease-out) forwards;
+}
+
+.intro-line--accent {
+    color: var(--accent-strong);
+    animation-delay: 0.14s;
+}
+
+@keyframes introLineIn {
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.intro-progress {
     position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 1px solid var(--line);
-    border-top-color: var(--accent);
-    animation: rotate 1.1s linear infinite;
-}
-
-.logo-container::after { display: none; }
-
-.loading-progress {
-    position: absolute;
-    bottom: -34px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
-    height: 2px;
+    inset: auto 0 0 0;
+    height: 1px;
     background: var(--line);
-    border-radius: var(--radius-pill);
-    overflow: hidden;
 }
 
-.loading-bar {
-    width: 0;
+.intro-bar {
     height: 100%;
-    background: linear-gradient(to right, var(--accent), var(--accent-strong));
-    animation: loading 2.4s var(--ease-out) forwards;
+    width: 100%;
+    background: var(--text);
+    transform: scaleX(0);
+    transform-origin: left center;
 }
 
-.loading-bar::after { display: none; }
-
-@keyframes rotate {
-    to { transform: rotate(360deg); }
+[dir="rtl"] .intro-bar {
+    transform-origin: right center;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.06); }
+.intro-count {
+    position: absolute;
+    bottom: 16px;
+    inset-inline-end: 22px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--text-faint);
 }
 
-@keyframes loading {
-    0% { width: 0; }
-    70% { width: 82%; }
-    100% { width: 100%; }
+@media (prefers-reduced-motion: reduce) {
+    .intro-line {
+        animation-duration: 0.01s;
+        animation-delay: 0s;
+    }
 }
 
 /* ============================================================

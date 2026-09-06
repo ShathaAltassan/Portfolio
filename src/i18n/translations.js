@@ -9,6 +9,10 @@ export const translations = {
       skills: 'Skills',
       contact: 'Contact',
     },
+    intro: {
+      line1: 'learn by doing.',
+      line2: 'lead by building.',
+    },
     ui: {
       resume: 'Résumé',
       viewWork: 'View my work',
@@ -212,6 +216,10 @@ export const translations = {
       projects: 'المشاريع',
       skills: 'المهارات',
       contact: 'تواصل معي',
+    },
+    intro: {
+      line1: 'أتعلّم بالممارسة،',
+      line2: 'وأقود بالبناء.',
     },
     ui: {
       resume: 'السيرة الذاتية',
