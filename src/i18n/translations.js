@@ -13,6 +13,26 @@ export const translations = {
       line1: 'learn by doing.',
       line2: 'lead by building.',
     },
+    assistant: {
+      launch: 'Ask me anything',
+      launchTag: 'ShathaAI',
+      title: 'ShathaAI',
+      subtitle: 'Ask about Shatha — projects, experience, contact.',
+      greeting:
+        "Hi! I'm ShathaAI. Ask me anything about Shatha — her experience, projects, skills, or how to reach her.",
+      placeholder: 'Type your question…',
+      send: 'Send',
+      thinking: 'Thinking…',
+      error: 'Something went wrong. Please try again.',
+      rateLimit: 'A few too many messages — give it a moment.',
+      disclaimer: 'AI-generated. Chats may be stored to improve ShathaAI.',
+      suggestions: [
+        'What has Shatha worked on?',
+        "What's she best at?",
+        'Tell me about the face recognition project',
+        'How can I contact her?',
+      ],
+    },
     ui: {
       resume: 'Résumé',
       viewWork: 'View my work',
@@ -220,6 +240,26 @@ export const translations = {
     intro: {
       line1: 'أتعلّم بالممارسة،',
       line2: 'وأقود بالبناء.',
+    },
+    assistant: {
+      launch: 'اسألني أي شيء',
+      launchTag: 'شذىai',
+      title: 'شذىai',
+      subtitle: 'اسأل عن شذى — مشاريعها، خبرتها، وكيف تتواصل معها.',
+      greeting:
+        'هلا! أنا شذىai. اسألني أي شيء عن شذى — خبرتها، مشاريعها، مهاراتها، أو كيف توصل لها.',
+      placeholder: 'اكتب سؤالك…',
+      send: 'إرسال',
+      thinking: 'أفكّر…',
+      error: 'صار خطأ، جرّب مرة ثانية.',
+      rateLimit: 'رسائل كثيرة بسرعة — أمهلني لحظة.',
+      disclaimer: 'ردود مولّدة بالذكاء الاصطناعي. قد تُحفظ المحادثات لتحسين شذىai.',
+      suggestions: [
+        'وش مشاريع شذى؟',
+        'وش أقوى مهاراتها؟',
+        'كلّمني عن مشروع التعرّف على الوجوه',
+        'كيف أتواصل معها؟',
+      ],
     },
     ui: {
       resume: 'السيرة الذاتية',
