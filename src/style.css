@@ -1726,7 +1726,7 @@ footer a:hover {
     position: fixed;
     left: 22px; /* always physical-left, even in RTL */
     bottom: 22px;
-    z-index: 850;
+    z-index: 950; /* above the sticky navbar (900) so the open panel isn't clipped */
     font-family: var(--font-sans);
 }
 
@@ -1798,7 +1798,7 @@ footer a:hover {
     display: flex;
     flex-direction: column;
     width: min(392px, calc(100vw - 32px));
-    height: min(576px, calc(100vh - 120px));
+    height: min(576px, calc(100dvh - 120px));
     border: 1px solid var(--line-strong);
     border-radius: 22px;
     background: var(--bg);
@@ -1891,7 +1891,10 @@ footer a:hover {
 
 .ai-messages {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -2184,7 +2187,7 @@ footer a:hover {
     transform: translateY(-1px);
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
     .ai {
         left: 0;
         right: 0;
@@ -2192,14 +2195,30 @@ footer a:hover {
     }
 
     .ai-launch {
-        margin: 0 0 16px 16px;
+        margin: 0 0 max(16px, env(safe-area-inset-bottom)) 16px;
     }
 
+    /* full-screen sheet on phones */
     .ai-panel {
-        width: 100vw;
-        height: 88vh;
-        border-radius: 20px 20px 0 0;
-        border-bottom: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        border: none;
+        border-radius: 0;
+    }
+
+    .ai-head {
+        padding-top: max(17px, calc(env(safe-area-inset-top) + 8px));
+    }
+
+    .ai-input {
+        padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 4px));
+    }
+
+    .ai-messages {
+        padding-bottom: 20px;
     }
 }
 
