@@ -1304,16 +1304,28 @@ section .title {
    ============================================================ */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 18px;
-    align-items: start;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* the last category (soft skills) spans the full width as a footer band */
+.skills-grid > :last-child {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 940px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .skill-category {
+    display: flex;
+    flex-direction: column;
     border: 1px solid var(--line);
     background: var(--bg-card);
     border-radius: var(--radius-card);
-    padding: 26px;
+    padding: 24px;
     transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s var(--ease-out);
 }
 
@@ -2332,10 +2344,13 @@ html {
         height: 40px;
     }
 
-    /* one column, no forced min-width overflow */
     .skills-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
+    }
+
+    .skills-grid > :last-child {
+        grid-column: auto;
     }
 
     .skill-category {
