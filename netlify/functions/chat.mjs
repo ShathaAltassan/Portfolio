@@ -16,7 +16,7 @@ import { SYSTEM_PROMPT } from './persona.mjs';
 
 const MODELS = (
   process.env.GEMINI_MODEL ||
-  'gemini-2.5-flash,gemini-2.5-flash-lite,gemini-2.0-flash,gemini-2.0-flash-lite,gemini-flash-latest,gemini-1.5-flash'
+  'gemini-flash-latest,gemini-2.5-flash,gemini-2.0-flash,gemini-2.5-flash-lite,gemini-2.0-flash-lite'
 )
   .split(',')
   .map((s) => s.trim())
@@ -183,9 +183,9 @@ export default async (request, context) => {
   let upstream = null;
   let lastDetail = '';
 
+  const MAX_ATTEMPTS = 3; // per model, on transient errors
   outer: for (const model of MODELS) {
-    // up to 2 attempts per model: retry once on a transient 429/500/503
-    for (let attempt = 1; attempt <= 2; attempt += 1) {
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
       let res;
       try {
         res = await fetch(
@@ -212,13 +212,14 @@ export default async (request, context) => {
       lastDetail = `${model} → ${res.status} ${msg}`;
       console.error('gemini error', lastDetail);
 
+      if (res.status === 401 || res.status === 403) break outer; // auth problem, stop
+
       const transient = res.status === 429 || res.status === 500 || res.status === 503;
-      if (transient && attempt === 1) {
-        await sleep(900);
+      if (transient && attempt < MAX_ATTEMPTS) {
+        await sleep(1000 * attempt); // 1s, 2s
         continue; // retry same model
       }
-      if (res.status === 401 || res.status === 403) break outer; // auth problem, stop
-      break; // move on to the next model
+      break; // 404/400 or out of retries → next model
     }
   }
 
