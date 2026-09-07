@@ -56,7 +56,7 @@ export const translations = {
         'React · React Native · Node.js',
         'AI agents & RAG pipelines',
       ],
-      tagline: ['Web, mobile, and backend, with AI at the core.'],
+      tagline: ['Turning ideas into working products: web, apps, and intelligent systems.'],
     },
     about: {
       title: 'About Me',
@@ -304,7 +304,7 @@ export const translations = {
         'React و React Native و Node.js',
         'AI agents وأنظمة RAG',
       ],
-      tagline: ['أطوّر الويب والتطبيقات والأنظمة الخلفية، والذكاء الاصطناعي في صميم شغلي.'],
+      tagline: ['أحوّل الأفكار إلى منتجات تعمل: ويب، تطبيقات، وأنظمة ذكية.'],
     },
     about: {
       title: 'نبذة عني',
