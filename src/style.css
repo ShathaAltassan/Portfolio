@@ -1837,32 +1837,46 @@ footer a:hover {
 
 /* panel */
 .ai-panel {
+    position: relative;
     display: flex;
     flex-direction: column;
-    width: min(384px, calc(100vw - 32px));
-    height: min(560px, calc(100vh - 120px));
+    width: min(392px, calc(100vw - 32px));
+    height: min(576px, calc(100vh - 120px));
     border: 1px solid var(--line-strong);
-    border-radius: 20px;
+    border-radius: 22px;
     background: var(--bg);
-    background-image: linear-gradient(var(--bg-card), var(--bg-card));
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.7);
+    background-image: linear-gradient(180deg, var(--bg-card-hover), var(--bg-card) 22%);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    box-shadow:
+        0 48px 100px -32px rgba(0, 0, 0, 0.72),
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
     overflow: hidden;
-    animation: aiPanelIn 0.32s var(--ease-out);
+    animation: aiPanelIn 0.4s var(--ease-out);
+}
+
+/* faint top sheen */
+.ai-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(169, 112, 240, 0.08), transparent);
+    pointer-events: none;
 }
 
 @keyframes aiPanelIn {
-    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    from { opacity: 0; transform: translateY(16px) scale(0.975); }
     to { opacity: 1; transform: none; }
 }
 
 .ai-head {
+    position: relative;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    padding: 16px 16px 14px;
+    padding: 17px 17px 15px;
     border-bottom: 1px solid var(--line);
 }
 
@@ -1935,6 +1949,16 @@ footer a:hover {
     border-radius: 14px;
     padding: 10px 13px;
     word-wrap: break-word;
+    /* let each message pick its own direction (Arabic replies render RTL) */
+    unicode-bidi: plaintext;
+    text-align: start;
+}
+
+.ai-msg--assistant p,
+.ai-msg--assistant li,
+.ai-msg--assistant ul,
+.ai-msg--assistant ol {
+    unicode-bidi: plaintext;
 }
 
 .ai-msg--user {
@@ -2021,34 +2045,132 @@ footer a:hover {
     30% { opacity: 1; transform: translateY(-3px); }
 }
 
+.ai-messages--intro {
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* soft aura behind the floating suggestions */
+.ai-messages--intro::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    top: 50%;
+    width: 320px;
+    height: 320px;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(169, 112, 240, 0.16), transparent 68%);
+    filter: blur(24px);
+    pointer-events: none;
+    animation: aiAura 9s ease-in-out infinite;
+}
+
+@keyframes aiAura {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.12); opacity: 1; }
+}
+
 .ai-suggest {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 2px;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    padding: 10px 0;
 }
 
 .ai-suggest button {
+    position: relative;
+    align-self: flex-start;
+    max-width: 84%;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: inherit;
-    font-size: 12.5px;
-    color: var(--text-muted);
-    background: transparent;
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius-pill);
-    padding: 7px 12px;
+    font-size: 13.5px;
+    line-height: 1.35;
+    text-align: start;
+    color: var(--text);
+    background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+        linear-gradient(140deg, rgba(169, 112, 240, 0.35), rgba(255, 255, 255, 0.06)) border-box;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    padding: 11px 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 28px -16px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    translate: 0 12px;
+    animation:
+        aiChipIn 0.6s var(--ease-out) forwards,
+        aiChipFloat var(--dur, 7s) ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 110ms), calc(var(--i, 0) * 110ms + 650ms);
+    transition: border-color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out),
+        transform 0.45s var(--ease-out), background 0.3s ease;
+}
+
+/* zigzag distribution across the panel width */
+.ai-suggest button:nth-child(1) { align-self: flex-start; margin-inline-start: 2%; --dur: 6.5s; }
+.ai-suggest button:nth-child(2) { align-self: flex-end;   margin-inline-end: 1%;  --dur: 8s; animation-direction: normal, alternate; }
+.ai-suggest button:nth-child(3) { align-self: flex-start; margin-inline-start: 11%; --dur: 7.2s; }
+.ai-suggest button:nth-child(4) { align-self: flex-end;   margin-inline-end: 6%;  --dur: 9s; animation-direction: normal, alternate-reverse; }
+
+.ai-suggest button span {
+    flex: 1;
+}
+
+.ai-suggest button::after {
+    content: '\2197';
+    color: var(--accent-strong);
+    opacity: 0.5;
+    font-size: 12px;
+    transition: transform 0.35s var(--ease-out), opacity 0.3s ease;
 }
 
 .ai-suggest button:hover:not(:disabled) {
-    color: var(--text);
-    border-color: var(--accent);
-    background: var(--accent-soft);
+    background: linear-gradient(var(--accent-soft), var(--accent-soft)) padding-box,
+        linear-gradient(140deg, var(--accent), rgba(189, 139, 255, 0.4)) border-box;
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 18px 40px -16px rgba(169, 112, 240, 0.4),
+        0 0 0 4px rgba(169, 112, 240, 0.08);
+}
+
+.ai-suggest button:hover:not(:disabled)::after {
+    opacity: 1;
+    transform: translate(2px, -2px);
+}
+
+.ai-suggest button:active:not(:disabled) {
+    transform: translateY(-1px) scale(0.99);
 }
 
 .ai-suggest button:disabled {
-    opacity: 0.5;
+    opacity: 0.35;
     cursor: default;
+    animation-play-state: paused;
+}
+
+@keyframes aiChipIn {
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+/* float uses `translate` + `rotate` so hover's `transform` composes on top */
+@keyframes aiChipFloat {
+    0%, 100% { translate: 0 0; rotate: 0deg; }
+    50% { translate: 0 -7px; rotate: -0.7deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ai-suggest button {
+        animation: aiChipIn 0.3s var(--ease-out) forwards;
+    }
+    .ai-messages--intro::before { animation: none; }
 }
 
 .ai-input {
@@ -2102,14 +2224,6 @@ footer a:hover {
 
 .ai-input button:not(:disabled):hover {
     transform: translateY(-1px);
-}
-
-.ai-disclaimer {
-    font-size: 10.5px;
-    color: var(--text-faint);
-    text-align: center;
-    padding: 0 14px 12px;
-    line-height: 1.4;
 }
 
 @media (max-width: 520px) {

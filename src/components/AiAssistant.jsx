@@ -15,6 +15,8 @@ function newSessionId() {
 
 const MD_COMPONENTS = {
   a: ({ node, ...props }) => <a {...props} target="_blank" rel="noreferrer" />,
+  p: ({ node, ...props }) => <p dir="auto" {...props} />,
+  li: ({ node, ...props }) => <li dir="auto" {...props} />,
 };
 
 export default function AiAssistant() {
@@ -23,7 +25,7 @@ export default function AiAssistant() {
 
   const [open, setOpen] = useState(false);
   const [sessionId] = useState(newSessionId);
-  const [messages, setMessages] = useState([{ role: 'assistant', content: a.greeting }]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -156,9 +158,12 @@ export default function AiAssistant() {
             </button>
           </header>
 
-          <div className="ai-messages" ref={scrollRef}>
+          <div
+            className={`ai-messages${hasAsked ? '' : ' ai-messages--intro'}`}
+            ref={scrollRef}
+          >
             {messages.map((m, i) => (
-              <div key={i} className={`ai-msg ai-msg--${m.role}`}>
+              <div key={i} className={`ai-msg ai-msg--${m.role}`} dir="auto">
                 {m.role === 'assistant' ? (
                   m.content ? (
                     <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>
@@ -179,9 +184,14 @@ export default function AiAssistant() {
 
             {!hasAsked && (
               <div className="ai-suggest">
-                {a.suggestions.map((s) => (
-                  <button key={s} onClick={() => send(s)} disabled={busy}>
-                    {s}
+                {a.suggestions.map((s, i) => (
+                  <button
+                    key={s}
+                    style={{ '--i': i }}
+                    onClick={() => send(s)}
+                    disabled={busy}
+                  >
+                    <span>{s}</span>
                   </button>
                 ))}
               </div>
@@ -198,6 +208,7 @@ export default function AiAssistant() {
             <textarea
               ref={inputRef}
               rows={1}
+              dir="auto"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
@@ -208,8 +219,6 @@ export default function AiAssistant() {
               <i className="fas fa-arrow-up" />
             </button>
           </form>
-
-          <p className="ai-disclaimer">{a.disclaimer}</p>
         </div>
       )}
     </div>
