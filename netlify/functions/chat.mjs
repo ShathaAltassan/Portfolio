@@ -6,6 +6,8 @@
  *   GEMINI_API_KEY          (required)  -> https://aistudio.google.com/apikey
  *   SUPABASE_URL            (optional)  -> logging off if unset
  *   SUPABASE_SERVICE_KEY    (optional)  -> service_role key
+ *   TELEGRAM_BOT_TOKEN      (optional)  -> from @BotFather; DM notification off if unset
+ *   TELEGRAM_CHAT_ID        (optional)  -> your chat id (e.g. from @userinfobot)
  *   GEMINI_MODEL            (optional)  -> comma list, tried in order
  *                                        (default: gemini-2.5-flash, then fallbacks)
  */
@@ -22,6 +24,8 @@ const MODELS = (
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
 
 const MAX_INPUT_CHARS = 2000;
 const MAX_HISTORY = 16;
@@ -93,6 +97,32 @@ async function logTurn({ sessionId, question, answer, country }) {
     });
   } catch (err) {
     console.error('supabase log failed:', err);
+  }
+}
+
+async function notifyTelegram({ question, answer, country }) {
+  if (!TG_TOKEN || !TG_CHAT) return;
+  const text = [
+    '🔔 New ShathaAI question',
+    '',
+    `❓ ${question.slice(0, 900)}`,
+    '',
+    `💬 ${(answer || '(no answer)').slice(0, 1500)}`,
+    '',
+    `📍 ${country || 'unknown'} · ${new Date().toISOString().replace('T', ' ').slice(0, 16)} UTC`,
+  ].join('\n');
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TG_CHAT,
+        text,
+        disable_web_page_preview: true,
+      }),
+    });
+  } catch (err) {
+    console.error('telegram notify failed:', err);
   }
 }
 
@@ -235,7 +265,10 @@ export default async (request, context) => {
         console.error('stream error', err);
       } finally {
         controller.close();
-        await logTurn({ sessionId, question: lastUser.content, answer: full, country });
+        await Promise.allSettled([
+          logTurn({ sessionId, question: lastUser.content, answer: full, country }),
+          notifyTelegram({ question: lastUser.content, answer: full, country }),
+        ]);
       }
     },
   });
