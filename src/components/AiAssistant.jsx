@@ -76,13 +76,7 @@ export default function AiAssistant() {
       });
 
       if (!res.ok || !res.body) {
-        let msg = res.status === 429 ? a.rateLimit : a.error;
-        try {
-          const body = await res.clone().json();
-          if (body?.detail) msg = `${msg}\n\n\`${body.detail}\``;
-        } catch {
-          /* non-JSON error body */
-        }
+        const msg = res.status === 429 ? a.rateLimit : a.error;
         setMessages((prev) => {
           const next = [...prev];
           next[next.length - 1] = { role: 'assistant', content: msg };
@@ -208,7 +202,7 @@ export default function AiAssistant() {
             <textarea
               ref={inputRef}
               rows={1}
-              dir="auto"
+              dir={lang === 'ar' ? 'rtl' : 'ltr'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}

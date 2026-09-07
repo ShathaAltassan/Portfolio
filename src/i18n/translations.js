@@ -26,7 +26,7 @@ export const translations = {
       suggestions: [
         'What has Shatha worked on?',
         "What's she best at?",
-        'Tell me about her skills',
+        'Tell me about her experience',
         'How can I contact her?',
       ],
     },
@@ -274,7 +274,7 @@ export const translations = {
       suggestions: [
         'وش مشاريع شذى؟',
         'وش أقوى مهاراتها؟',
-        'كلّمني عن مهاراتها',
+        'كلّمني عن خبرتها',
         'كيف أتواصل معها؟',
       ],
     },

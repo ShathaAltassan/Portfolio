@@ -2145,6 +2145,7 @@ footer a:hover {
     font-family: inherit;
     font-size: 14px;
     line-height: 1.5;
+    text-align: start;
     color: var(--text);
     background: var(--bg-elevated);
     border: 1px solid var(--line-strong);

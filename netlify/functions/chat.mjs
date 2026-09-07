@@ -145,34 +145,48 @@ export default async (request, context) => {
     ].map((category) => ({ category, threshold: 'BLOCK_ONLY_HIGH' })),
   });
 
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
   let upstream = null;
   let lastDetail = '';
-  for (const model of MODELS) {
-    let res;
-    try {
-      res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
-        { method: 'POST', headers: { 'content-type': 'application/json' }, body: requestBody },
-      );
-    } catch (err) {
-      lastDetail = `network: ${err?.message || err}`;
-      continue;
+
+  outer: for (const model of MODELS) {
+    // up to 2 attempts per model: retry once on a transient 429/500/503
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      let res;
+      try {
+        res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
+          { method: 'POST', headers: { 'content-type': 'application/json' }, body: requestBody },
+        );
+      } catch (err) {
+        lastDetail = `${model}: network ${err?.message || err}`;
+        break; // try next model
+      }
+
+      if (res.ok && res.body) {
+        upstream = res;
+        break outer;
+      }
+
+      const text = await res.text().catch(() => '');
+      let msg = text.slice(0, 300);
+      try {
+        msg = JSON.parse(text)?.error?.message || msg;
+      } catch {
+        /* keep raw */
+      }
+      lastDetail = `${model} → ${res.status} ${msg}`;
+      console.error('gemini error', lastDetail);
+
+      const transient = res.status === 429 || res.status === 500 || res.status === 503;
+      if (transient && attempt === 1) {
+        await sleep(900);
+        continue; // retry same model
+      }
+      if (res.status === 401 || res.status === 403) break outer; // auth problem, stop
+      break; // move on to the next model
     }
-    if (res.ok && res.body) {
-      upstream = res;
-      break;
-    }
-    const text = await res.text().catch(() => '');
-    let msg = text.slice(0, 300);
-    try {
-      msg = JSON.parse(text)?.error?.message || msg;
-    } catch {
-      /* keep raw */
-    }
-    lastDetail = `${model} → ${res.status} ${msg}`;
-    console.error('gemini error', lastDetail);
-    // 404/400 = bad model or bad key: try the next model. Others: stop.
-    if (res.status !== 404 && res.status !== 400) break;
   }
 
   if (!upstream) {
