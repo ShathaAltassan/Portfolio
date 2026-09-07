@@ -289,10 +289,16 @@ export default async (request, context) => {
         console.error('stream error', err);
       } finally {
         controller.close();
-        await Promise.allSettled([
+        // finish logging / notifying even though the response stream is closed
+        const after = Promise.allSettled([
           logTurn({ sessionId, question: lastUser.content, answer: full, country }),
           notifyTelegram({ question: lastUser.content, answer: full, country }),
         ]);
+        if (typeof context?.waitUntil === 'function') {
+          context.waitUntil(after);
+        } else {
+          await after;
+        }
       }
     },
   });
