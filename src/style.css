@@ -1090,6 +1090,7 @@ section .title {
     text-transform: uppercase;
     color: var(--text-faint);
     font-weight: 400;
+    unicode-bidi: plaintext;
 }
 
 .gpa-badge {
@@ -1112,6 +1113,7 @@ section .title {
     color: var(--text);
     font-size: 0.9rem;
     line-height: 1.4;
+    unicode-bidi: plaintext;
 }
 
 .education-achievements {
