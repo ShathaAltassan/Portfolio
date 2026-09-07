@@ -431,6 +431,7 @@ section .title {
 .navbar .logo {
     display: flex;
     align-items: center;
+    transition: opacity 0.25s ease;
 }
 
 .navbar .logo-image {
