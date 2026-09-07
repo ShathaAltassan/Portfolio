@@ -406,7 +406,7 @@ section .title {
 .navbar {
     position: fixed;
     inset: 0 0 auto 0;
-    z-index: 900;
+    z-index: 945;
     padding: 22px 0;
     transition: padding 0.35s var(--ease-out), background 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
     border-bottom: 1px solid transparent;
@@ -448,7 +448,7 @@ section .title {
     inset: 0 0 auto 0;
     height: 2px;
     background: transparent;
-    z-index: 901;
+    z-index: 946;
 }
 
 .nav-scroll-progress .bar {
@@ -574,17 +574,15 @@ section .title {
         inset: 0;
         flex-direction: column;
         justify-content: center;
-        gap: 8px;
-        background: rgba(8, 7, 11, 0.92);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        align-items: center;
+        gap: 4px;
+        background: var(--bg);
         transform: translateX(100%);
         transition: transform 0.4s var(--ease-out);
-        z-index: 899;
-    }
-
-    [data-theme="light"] .menu {
-        background: rgba(245, 244, 247, 0.96);
+        z-index: 940;
+        padding: 96px 24px max(28px, env(safe-area-inset-bottom));
+        opacity: 0;
+        pointer-events: none;
     }
 
     [dir="rtl"] .menu {
@@ -593,20 +591,48 @@ section .title {
 
     .menu.active {
         transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .menu li {
+        width: 100%;
+        max-width: 340px;
     }
 
     .menu li a {
-        font-size: 20px;
-        padding: 12px 20px;
+        display: block;
+        text-align: center;
+        font-size: 19px;
+        font-weight: 500;
+        color: var(--text);
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .menu li a:active {
+        background: var(--bg-elevated);
     }
 
     .menu-btn {
         display: flex;
-        z-index: 901;
     }
 
     .nav-resume {
         display: none;
+    }
+
+    /* while the menu is open, only the close (X) button stays on the bar */
+    body.menu-open .navbar .logo,
+    body.menu-open .navbar-controls > :not(.menu-btn) {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    body.menu-open .ai,
+    body.menu-open .nav-scroll-progress {
+        opacity: 0;
+        pointer-events: none;
     }
 }
 
@@ -2194,8 +2220,12 @@ footer a:hover {
         bottom: 0;
     }
 
+    /* pin the launcher to the physical bottom-left in every language */
     .ai-launch {
-        margin: 0 0 max(16px, env(safe-area-inset-bottom)) 16px;
+        position: fixed;
+        left: 16px;
+        bottom: max(16px, env(safe-area-inset-bottom));
+        margin: 0;
     }
 
     /* full-screen sheet on phones */

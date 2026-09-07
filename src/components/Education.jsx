@@ -22,8 +22,12 @@ export default function Education() {
             <i className="fas fa-star" />
             <span>
               {t.education.gpaLine1}
-              <br />
-              {t.education.gpaLine2}
+              {t.education.gpaLine2 ? (
+                <>
+                  <br />
+                  {t.education.gpaLine2}
+                </>
+              ) : null}
             </span>
           </div>
 

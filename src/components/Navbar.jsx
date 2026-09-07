@@ -32,8 +32,10 @@ export default function Navbar({ theme, toggleTheme }) {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
+    document.body.classList.toggle('menu-open', menuOpen);
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('menu-open');
     };
   }, [menuOpen]);
 

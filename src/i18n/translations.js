@@ -107,7 +107,7 @@ export const translations = {
       org: 'Qassim University | Saudi Arabia',
       period: '2019 - 2024',
       gpaLine1: 'GPA: 4.65 / 5',
-      gpaLine2: 'Saudi Council of Engineers · Specialist Member',
+      gpaLine2: '',
       achievement: 'Graduation Project: Face Detection & Recognition System',
     },
     projects: {
@@ -319,7 +319,7 @@ export const translations = {
       items: [
         {
           title: 'مهندسة برمجيات',
-          org: 'شركة Inteli Dexer | السعودية',
+          org: 'شركة المفهرس الذكي | السعودية',
           period: 'يناير 2025 - حتى الآن',
           points: [
             'أطوّر تطبيقات ويب وجوّال متكاملة (full-stack) بـ JavaScript وTypeScript وReact وReact Native وExpo وNode.js، ببنية قائمة على الخدمات وREST APIs وWebSockets.',
@@ -340,7 +340,7 @@ export const translations = {
         },
         {
           title: 'تدريب: مهندسة إلكترونيات وأنظمة طاقة',
-          org: 'شركة Smart Methods | السعودية',
+          org: 'شركة الأساليب الذكية | السعودية',
           period: 'يونيو 2023 - أغسطس 2023',
           points: [
             'صمّمت وبرمجت دوائر كهربائية لمكوّنات روبوتية بـ Arduino و⁦C++⁩، ورفعت كفاءة الأنظمة وأداءها.',
@@ -355,7 +355,7 @@ export const translations = {
       org: 'جامعة القصيم | السعودية',
       period: '2019 - 2024',
       gpaLine1: 'المعدل: 4.65 / 5',
-      gpaLine2: 'هيئة المهندسين السعودية · عضو أخصائي',
+      gpaLine2: '',
       achievement: 'مشروع التخرج: نظام كشف والتعرّف على الوجوه',
     },
     projects: {
