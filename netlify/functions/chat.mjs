@@ -20,7 +20,8 @@ import { SYSTEM_PROMPT } from './persona.mjs';
 
 const MODELS = (
   process.env.GEMINI_MODEL ||
-  'gemini-3.5-flash,gemini-3.5-flash-lite,gemini-3.7-flash,gemini-flash-latest,gemini-2.5-flash,gemini-2.5-flash-lite'
+  // full "flash" models first — the "-lite" ones garble mixed Arabic/English
+  'gemini-3.5-flash,gemini-3.7-flash,gemini-flash-latest,gemini-2.5-flash,gemini-3.5-flash-lite,gemini-2.5-flash-lite'
 )
   .split(',')
   .map((s) => s.trim())
@@ -202,9 +203,11 @@ export default async (request, context) => {
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents,
       generationConfig: {
-        temperature: 0.6,
+        temperature: 0.4,
         topP: 0.95,
-        maxOutputTokens: 1400,
+        // headroom so a long answer is never cut mid-sentence; on models where
+        // "thinking" can't be turned off it also has to cover the hidden reasoning
+        maxOutputTokens: 3000,
         // short bio Q&A doesn't need chain-of-thought — faster + cheaper
         ...(noThinking ? {} : { thinkingConfig: { thinkingBudget: 0 } }),
       },
@@ -294,6 +297,23 @@ export default async (request, context) => {
   const decoder = new TextDecoder();
   let full = '';
   let buffer = '';
+  let finishReason = '';
+
+  const handleData = (data, controller) => {
+    if (!data || data === '[DONE]') return;
+    try {
+      const parsed = JSON.parse(data);
+      const cand = parsed?.candidates?.[0];
+      const piece = cand?.content?.parts?.map((p) => p.text || '').join('') || '';
+      if (piece) {
+        full += piece;
+        controller.enqueue(encoder.encode(piece));
+      }
+      if (cand?.finishReason) finishReason = cand.finishReason;
+    } catch {
+      /* ignore keep-alive / partial frames */
+    }
+  };
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -308,24 +328,19 @@ export default async (request, context) => {
           for (const line of lines) {
             const trimmed = line.trim();
             if (!trimmed.startsWith('data:')) continue;
-            const data = trimmed.slice(5).trim();
-            if (!data || data === '[DONE]') continue;
-            try {
-              const parsed = JSON.parse(data);
-              const piece = parsed?.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
-              if (piece) {
-                full += piece;
-                controller.enqueue(encoder.encode(piece));
-              }
-            } catch {
-              /* ignore keep-alive / partial frames */
-            }
+            handleData(trimmed.slice(5).trim(), controller);
           }
         }
+        // flush a trailing frame that never got its closing newline
+        const tail = buffer.trim();
+        if (tail.startsWith('data:')) handleData(tail.slice(5).trim(), controller);
       } catch (err) {
         console.error('stream error', err);
       } finally {
         controller.close();
+        if (finishReason && finishReason !== 'STOP') {
+          console.error(`gemini finishReason=${finishReason} after ${full.length} chars`);
+        }
         // finish logging / notifying even though the response stream is closed
         const after = Promise.allSettled([
           logTurn({ sessionId, question: lastUser.content, answer: full, country }),
