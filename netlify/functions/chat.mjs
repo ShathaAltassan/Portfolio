@@ -166,22 +166,30 @@ export default async (request, context) => {
   const country = context?.geo?.country?.code || null;
   const contents = toGeminiContents(messages);
 
-  const requestBody = JSON.stringify({
-    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-    contents,
-    generationConfig: { temperature: 0.6, topP: 0.95, maxOutputTokens: 900 },
-    safetySettings: [
-      'HARM_CATEGORY_HARASSMENT',
-      'HARM_CATEGORY_HATE_SPEECH',
-      'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-      'HARM_CATEGORY_DANGEROUS_CONTENT',
-    ].map((category) => ({ category, threshold: 'BLOCK_ONLY_HIGH' })),
-  });
+  const buildBody = (noThinking) =>
+    JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents,
+      generationConfig: {
+        temperature: 0.6,
+        topP: 0.95,
+        maxOutputTokens: 1400,
+        // short bio Q&A doesn't need chain-of-thought — faster + cheaper
+        ...(noThinking ? {} : { thinkingConfig: { thinkingBudget: 0 } }),
+      },
+      safetySettings: [
+        'HARM_CATEGORY_HARASSMENT',
+        'HARM_CATEGORY_HATE_SPEECH',
+        'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+        'HARM_CATEGORY_DANGEROUS_CONTENT',
+      ].map((category) => ({ category, threshold: 'BLOCK_ONLY_HIGH' })),
+    });
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   let upstream = null;
   let lastDetail = '';
+  let noThinking = false;
 
   const MAX_ATTEMPTS = 3; // per model, on transient errors
   outer: for (const model of MODELS) {
@@ -190,7 +198,11 @@ export default async (request, context) => {
       try {
         res = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${GEMINI_KEY}`,
-          { method: 'POST', headers: { 'content-type': 'application/json' }, body: requestBody },
+          {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: buildBody(noThinking),
+          },
         );
       } catch (err) {
         lastDetail = `${model}: network ${err?.message || err}`;
@@ -213,6 +225,13 @@ export default async (request, context) => {
       console.error('gemini error', lastDetail);
 
       if (res.status === 401 || res.status === 403) break outer; // auth problem, stop
+
+      // some models reject `thinkingConfig` — drop it and retry the same model
+      if (res.status === 400 && !noThinking && /thinking/i.test(text)) {
+        noThinking = true;
+        attempt -= 1;
+        continue;
+      }
 
       const transient = res.status === 429 || res.status === 500 || res.status === 503;
       if (transient && attempt < MAX_ATTEMPTS) {
