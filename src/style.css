@@ -337,8 +337,9 @@ section {
     font-family: var(--font-sans);
     font-weight: 700;
     letter-spacing: 0;
-    line-height: 1.34;
-    padding-bottom: 0.08em;
+    line-height: 1.5;
+    padding-bottom: 0.25em;
+    overflow: visible;
     font-feature-settings: "swsh" 1, "calt" 1;
 }
 
@@ -362,7 +363,8 @@ section .title {
     font-family: var(--font-sans);
     font-weight: 700;
     letter-spacing: 0;
-    line-height: 1.34;
+    line-height: 1.5;
+    padding-bottom: 0.25em;
     font-feature-settings: "swsh" 1, "calt" 1;
 }
 
@@ -684,8 +686,9 @@ section .title {
     font-family: var(--font-sans);
     font-weight: 700;
     letter-spacing: 0;
-    line-height: 1.32;
-    padding-bottom: 0.08em;
+    line-height: 1.4;
+    padding-bottom: 0.18em;
+    overflow: visible;
     /* Thmanyah Sans swash forms — the elongated "ممدود" display look */
     font-feature-settings: "swsh" 1, "calt" 1;
 }
@@ -1041,8 +1044,11 @@ section .title {
     padding: clamp(28px, 5vw, 48px);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 8px;
+    max-width: 640px;
+    margin-inline: auto;
     transition: border-color 0.3s ease, background 0.3s ease;
 }
 
@@ -1063,7 +1069,7 @@ section .title {
     font-weight: 600;
     color: var(--heading-color);
     letter-spacing: -0.02em;
-    text-align: start;
+    text-align: center;
 }
 
 [dir="rtl"] .education-card h3 {
@@ -1296,7 +1302,7 @@ section .title {
    ============================================================ */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 18px;
     align-items: start;
 }
@@ -2301,18 +2307,69 @@ html {
 /* ============================================================
    Small screens
    ============================================================ */
-@media (max-width: 560px) {
+@media (max-width: 640px) {
+    section {
+        padding: clamp(44px, 8vh, 76px) 0;
+    }
+
     .section-head {
         gap: 12px;
     }
 
     .eyebrow {
         font-size: 11px;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.16em;
+    }
+
+    [dir="rtl"] .eyebrow {
+        letter-spacing: 0.04em;
     }
 
     .icons a {
         width: 40px;
         height: 40px;
+    }
+
+    /* one column, no forced min-width overflow */
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .skill-category {
+        padding: 20px;
+    }
+
+    .education-card {
+        padding: 26px 20px;
+    }
+
+    .timeline {
+        padding-inline-start: 24px;
+    }
+
+    .timeline-item::before {
+        inset-inline-start: -28px;
+    }
+
+    .gh-activity {
+        padding: 18px 14px;
+    }
+
+    .contact-row {
+        padding: 16px 4px;
+        gap: 12px;
+    }
+
+    /* give the elongated Arabic headings extra breathing room */
+    [dir="rtl"] .section-title,
+    [dir="rtl"] section .title {
+        line-height: 1.55;
+        padding-bottom: 0.3em;
+    }
+
+    [dir="rtl"] .hero-name {
+        line-height: 1.45;
+        padding-bottom: 0.24em;
     }
 }

@@ -237,9 +237,15 @@ export const translations = {
       heading: "Let's Get in Touch",
       paragraph:
         "I'm always excited to connect and explore new opportunities! Whether you have a project in mind, a question about my work, or if you're interested in discussing potential job opportunities, please don't hesitate to reach out. Let's collaborate and create something amazing together!",
-      location: 'Saudi Arabia - Al-Qassim',
-      linkedinLabel: 'LinkedIn-Shatha-Altasan',
+      location: 'Al-Qassim, Saudi Arabia',
+      linkedinLabel: 'LinkedIn - Shatha Altasan',
       whatsappLabel: 'WhatsApp',
+      labels: {
+        email: 'Email',
+        github: 'GitHub',
+        linkedin: 'LinkedIn',
+        whatsapp: 'WhatsApp',
+      },
     },
     footer: {
       createdBy: 'Created By',
@@ -486,8 +492,14 @@ export const translations = {
       paragraph:
         'يسعدني دائمًا التواصل واستكشاف فرص جديدة! سواء كان لديك مشروع في بالك، أو سؤال عن أعمالي، أو تودّ مناقشة فرصة عمل، لا تتردد بالتواصل. لنتعاون معًا ونصنع شيئًا رائعًا!',
       location: 'القصيم، السعودية',
-      linkedinLabel: 'LinkedIn - شذى الطاسان',
-      whatsappLabel: 'WhatsApp',
+      linkedinLabel: 'لينكدإن - شذى الطاسان',
+      whatsappLabel: 'واتساب',
+      labels: {
+        email: 'البريد الإلكتروني',
+        github: 'جيت هب',
+        linkedin: 'لينكدإن',
+        whatsapp: 'واتساب',
+      },
     },
     footer: {
       createdBy: 'تصميم وتطوير',
