@@ -8,8 +8,10 @@
  *   SUPABASE_SERVICE_KEY    (optional)  -> service_role key
  *   TELEGRAM_BOT_TOKEN      (optional)  -> from @BotFather; DM notification off if unset
  *   TELEGRAM_CHAT_ID        (optional)  -> your chat id (e.g. from @userinfobot)
- *   GEMINI_MODEL            (optional)  -> comma list, tried in order
- *                                        (default: gemini-2.5-flash, then fallbacks)
+ *   GEMINI_MODEL            (optional)  -> comma list, tried in order. Default leads
+ *                                        with gemini-3.5-flash then falls back. If
+ *                                        Google renames models again, set this to a
+ *                                        model from GET /v1beta/models?key=...
  */
 
 import { SYSTEM_PROMPT } from './persona.mjs';
