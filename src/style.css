@@ -571,31 +571,38 @@ section .title {
     font-size: 26px;
 }
 
+/* only ever shown inside the mobile menu overlay (see media query below) */
+.menu-close {
+    display: none;
+}
+
 @media (max-width: 900px) {
     .menu {
         position: fixed;
         inset: 0;
+        height: 100vh;
+        height: 100dvh;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
         background: var(--bg);
-        transform: translateX(100%);
-        transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
-        z-index: 940;
-        padding: 96px 24px max(28px, env(safe-area-inset-bottom));
+        z-index: 1000;
+        padding: max(84px, env(safe-area-inset-top)) 24px max(28px, env(safe-area-inset-bottom));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        /* fade instead of a slide — a slide off-canvas can leak horizontal scroll */
         opacity: 0;
-        pointer-events: none;
-    }
-
-    [dir="rtl"] .menu {
-        transform: translateX(-100%);
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.28s var(--ease-out), transform 0.32s var(--ease-out), visibility 0.28s;
     }
 
     .menu.active {
-        transform: translateX(0);
         opacity: 1;
-        pointer-events: auto;
+        visibility: visible;
+        transform: none;
     }
 
     .menu li {
@@ -606,10 +613,10 @@ section .title {
     .menu li a {
         display: block;
         text-align: center;
-        font-size: 19px;
+        font-size: 20px;
         font-weight: 500;
         color: var(--text);
-        padding: 15px;
+        padding: 16px;
         border-radius: 12px;
     }
 
@@ -625,9 +632,9 @@ section .title {
         display: none;
     }
 
-    /* while the menu is open, only the close (X) button stays on the bar */
+    /* the open menu covers the whole bar; its own X button (below) closes it */
     body.menu-open .navbar .logo,
-    body.menu-open .navbar-controls > :not(.menu-btn) {
+    body.menu-open .navbar-controls {
         opacity: 0;
         pointer-events: none;
     }
@@ -636,6 +643,31 @@ section .title {
     body.menu-open .nav-scroll-progress {
         opacity: 0;
         pointer-events: none;
+    }
+
+    .menu-close {
+        display: none;
+        position: fixed;
+        top: max(16px, env(safe-area-inset-top));
+        inset-inline-end: max(16px, env(safe-area-inset-right));
+        z-index: 1001;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-elevated);
+        border: 1px solid var(--line-strong);
+        border-radius: 50%;
+        color: var(--text);
+        cursor: pointer;
+    }
+
+    body.menu-open .menu-close {
+        display: flex;
+    }
+
+    .menu-close i {
+        font-size: 24px;
     }
 }
 

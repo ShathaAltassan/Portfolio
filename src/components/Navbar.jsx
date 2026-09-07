@@ -33,7 +33,11 @@ export default function Navbar({ theme, toggleTheme }) {
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     document.body.classList.toggle('menu-open', menuOpen);
+    if (!menuOpen) return undefined;
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false);
+    window.addEventListener('keydown', onKey);
     return () => {
+      window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
       document.body.classList.remove('menu-open');
     };
@@ -66,6 +70,14 @@ export default function Navbar({ theme, toggleTheme }) {
               </li>
             ))}
           </ul>
+
+          <button
+            className="menu-close"
+            aria-label={lang === 'ar' ? 'إغلاق القائمة' : 'Close menu'}
+            onClick={() => setMenuOpen(false)}
+          >
+            <i className="material-icons">close</i>
+          </button>
 
           <div className="navbar-controls">
             <button className="lang-toggle" aria-label="Toggle language" onClick={toggleLang}>
