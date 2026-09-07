@@ -6,7 +6,9 @@
  *   GEMINI_API_KEY          (required)  -> https://aistudio.google.com/apikey
  *   SUPABASE_URL            (optional)  -> logging off if unset
  *   SUPABASE_SERVICE_KEY    (optional)  -> service_role key
- *   TELEGRAM_BOT_TOKEN      (optional)  -> from @BotFather; DM notification off if unset
+ *   TELEGRAM_BOT_TOKEN      (optional)  -> from @BotFather; DM on every question AND
+ *                                        a one-per-hour alert if the Gemini key
+ *                                        runs out of quota. Off if unset.
  *   TELEGRAM_CHAT_ID        (optional)  -> your chat id (e.g. from @userinfobot)
  *   GEMINI_MODEL            (optional)  -> comma list, tried in order. Default leads
  *                                        with gemini-3.5-flash then falls back. If
@@ -102,20 +104,11 @@ async function logTurn({ sessionId, question, answer, country }) {
   }
 }
 
-async function notifyTelegram({ question, answer, country }) {
+async function sendTelegram(text) {
   if (!TG_TOKEN || !TG_CHAT) {
     console.log('telegram: skipped (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set)');
     return;
   }
-  const text = [
-    '🔔 New ShathaAI question',
-    '',
-    `❓ ${question.slice(0, 900)}`,
-    '',
-    `💬 ${(answer || '(no answer)').slice(0, 1500)}`,
-    '',
-    `📍 ${country || 'unknown'} · ${new Date().toISOString().replace('T', ' ').slice(0, 16)} UTC`,
-  ].join('\n');
   try {
     const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
@@ -128,6 +121,40 @@ async function notifyTelegram({ question, answer, country }) {
   } catch (err) {
     console.error('telegram notify error:', err);
   }
+}
+
+function notifyTelegram({ question, answer, country }) {
+  const text = [
+    '🔔 New ShathaAI question',
+    '',
+    `❓ ${question.slice(0, 900)}`,
+    '',
+    `💬 ${(answer || '(no answer)').slice(0, 1500)}`,
+    '',
+    `📍 ${country || 'unknown'} · ${new Date().toISOString().replace('T', ' ').slice(0, 16)} UTC`,
+  ].join('\n');
+  return sendTelegram(text);
+}
+
+// One quota alert per hour at most, so a spent key doesn't flood the chat.
+let lastQuotaAlert = 0;
+const QUOTA_ALERT_COOLDOWN_MS = 60 * 60 * 1000;
+
+function notifyQuota(detail) {
+  const now = Date.now();
+  if (now - lastQuotaAlert < QUOTA_ALERT_COOLDOWN_MS) return Promise.resolve();
+  lastQuotaAlert = now;
+  const text = [
+    '⚠️ ShathaAI: Gemini quota / rate limit reached',
+    '',
+    'Visitors are getting an error until the quota resets (usually within a',
+    'day) or GEMINI_API_KEY is replaced in Netlify.',
+    '',
+    `🧩 ${String(detail || 'RESOURCE_EXHAUSTED').slice(0, 500)}`,
+    '',
+    `🕐 ${new Date().toISOString().replace('T', ' ').slice(0, 16)} UTC`,
+  ].join('\n');
+  return sendTelegram(text);
 }
 
 // ---- handler ------------------------------------------------------------
@@ -194,6 +221,7 @@ export default async (request, context) => {
   let upstream = null;
   let lastDetail = '';
   let noThinking = false;
+  let quotaHit = false;
 
   const MAX_ATTEMPTS = 3; // per model, on transient errors
   outer: for (const model of MODELS) {
@@ -228,6 +256,10 @@ export default async (request, context) => {
       lastDetail = `${model} → ${res.status} ${msg}`;
       console.error('gemini error', lastDetail);
 
+      if (res.status === 429 || /RESOURCE_EXHAUSTED|quota|rate limit/i.test(text)) {
+        quotaHit = true;
+      }
+
       if (res.status === 401 || res.status === 403) break outer; // auth problem, stop
 
       // some models reject `thinkingConfig` — drop it and retry the same model
@@ -247,6 +279,11 @@ export default async (request, context) => {
   }
 
   if (!upstream) {
+    if (quotaHit) {
+      const alert = notifyQuota(lastDetail);
+      if (typeof context?.waitUntil === 'function') context.waitUntil(alert);
+      else await alert;
+    }
     return json(502, {
       error: 'The assistant is having a moment. Try again shortly.',
       detail: lastDetail || 'no response from Gemini',
