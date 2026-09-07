@@ -103,7 +103,10 @@ async function logTurn({ sessionId, question, answer, country }) {
 }
 
 async function notifyTelegram({ question, answer, country }) {
-  if (!TG_TOKEN || !TG_CHAT) return;
+  if (!TG_TOKEN || !TG_CHAT) {
+    console.log('telegram: skipped (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set)');
+    return;
+  }
   const text = [
     '🔔 New ShathaAI question',
     '',
@@ -114,17 +117,16 @@ async function notifyTelegram({ question, answer, country }) {
     `📍 ${country || 'unknown'} · ${new Date().toISOString().replace('T', ' ').slice(0, 16)} UTC`,
   ].join('\n');
   try {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TG_CHAT,
-        text,
-        disable_web_page_preview: true,
-      }),
+      body: JSON.stringify({ chat_id: TG_CHAT, text, disable_web_page_preview: true }),
     });
+    if (!res.ok) {
+      console.error('telegram sendMessage failed:', res.status, (await res.text()).slice(0, 300));
+    }
   } catch (err) {
-    console.error('telegram notify failed:', err);
+    console.error('telegram notify error:', err);
   }
 }
 
