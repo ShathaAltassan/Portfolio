@@ -5,33 +5,34 @@ import SectionHead from './SectionHead.jsx';
 export default function Contact() {
   const { t } = useLanguage();
 
+  const L = t.contact.labels;
   const rows = [
     {
-      k: 'Email',
+      k: L.email,
       v: 'shatha.altassan@outlook.com',
       href: 'mailto:shatha.altassan@outlook.com',
       icon: 'fas fa-envelope',
     },
     {
-      k: 'GitHub',
+      k: L.github,
       v: 'github.com/ShathaAltassan',
       href: 'https://github.com/ShathaAltassan',
       icon: 'fab fa-github',
     },
     {
-      k: 'LinkedIn',
+      k: L.linkedin,
       v: t.contact.linkedinLabel,
       href: 'https://www.linkedin.com/in/shatha-altassan/',
       icon: 'fab fa-linkedin-in',
     },
     {
-      k: 'WhatsApp',
+      k: L.whatsapp,
       v: '+966 50 519 1283',
       href: 'https://wa.me/966505191283',
       icon: 'fab fa-whatsapp',
     },
     {
-      k: t.contact.location,
+      k: t.ui.locationLabel,
       v: t.contact.location,
       href: null,
       icon: 'fas fa-map-marker-alt',

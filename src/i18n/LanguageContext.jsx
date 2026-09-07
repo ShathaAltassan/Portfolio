@@ -4,8 +4,7 @@ import { translations } from './translations';
 const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
-  // Language switching is currently disabled — English only.
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState(() => localStorage.getItem('lang') || 'ar');
 
   useEffect(() => {
     document.documentElement.lang = lang;
