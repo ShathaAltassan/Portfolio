@@ -1340,6 +1340,8 @@ section .title {
     font-size: 13.5px;
     font-weight: 500;
     color: var(--text);
+    /* keep "C#", "C++", "UI/UX" etc. intact in RTL */
+    unicode-bidi: plaintext;
 }
 
 /* ============================================================
@@ -1621,51 +1623,6 @@ footer a:hover {
 }
 
 /* ============================================================
-   Scroll-to-top / progress ring
-   ============================================================ */
-#btnScrollToTop {
-    position: fixed;
-    inset-inline-end: 22px;
-    bottom: 22px;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    border: 1px solid var(--line-strong);
-    background: rgba(8, 7, 11, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--text);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 800;
-    opacity: 0;
-    transform: translateY(12px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s var(--ease-out), border-color 0.25s ease;
-}
-
-#btnScrollToTop.show {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-}
-
-#btnScrollToTop:hover {
-    border-color: var(--accent);
-    color: var(--accent-strong);
-}
-
-[data-theme="light"] #btnScrollToTop {
-    background: rgba(255, 255, 255, 0.8);
-}
-
-#btnScrollToTop i {
-    font-size: 20px;
-}
-
-/* ============================================================
    Intro screen — motto + progress, then wipes away
    ============================================================ */
 .intro {
@@ -1767,7 +1724,7 @@ footer a:hover {
    ============================================================ */
 .ai {
     position: fixed;
-    inset-inline-start: 22px;
+    left: 22px; /* always physical-left, even in RTL */
     bottom: 22px;
     z-index: 850;
     font-family: var(--font-sans);
@@ -2228,16 +2185,13 @@ footer a:hover {
 
 @media (max-width: 520px) {
     .ai {
-        inset-inline: 0;
+        left: 0;
+        right: 0;
         bottom: 0;
     }
 
     .ai-launch {
         margin: 0 0 16px 16px;
-    }
-
-    [dir="rtl"] .ai-launch {
-        margin: 0 16px 16px 0;
     }
 
     .ai-panel {
@@ -2246,11 +2200,6 @@ footer a:hover {
         border-radius: 20px 20px 0 0;
         border-bottom: none;
     }
-}
-
-/* keep the launcher clear of the scroll-to-top button if they ever meet */
-#btnScrollToTop {
-    z-index: 851;
 }
 
 /* ============================================================

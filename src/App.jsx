@@ -1,7 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import Navbar from './components/Navbar.jsx';
-import ScrollToTopButton from './components/ScrollToTopButton.jsx';
 import Home from './components/Home.jsx';
 import About from './components/About.jsx';
 import Experience from './components/Experience.jsx';
@@ -34,7 +33,6 @@ export default function App() {
 
       <LoadingScreen />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <ScrollToTopButton />
       <Suspense fallback={null}>
         <AiAssistant />
       </Suspense>

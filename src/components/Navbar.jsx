@@ -5,7 +5,7 @@ const RESUME_URL =
   'https://drive.google.com/drive/folders/1-CoSev9pBAnSc1W-nEqfbD7AAq5TWX2_?usp=drive_link';
 
 export default function Navbar({ theme, toggleTheme }) {
-  const { t } = useLanguage();
+  const { lang, toggleLang, t } = useLanguage();
   const [sticky, setSticky] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -66,6 +66,9 @@ export default function Navbar({ theme, toggleTheme }) {
           </ul>
 
           <div className="navbar-controls">
+            <button className="lang-toggle" aria-label="Toggle language" onClick={toggleLang}>
+              {lang === 'ar' ? 'EN' : 'عربي'}
+            </button>
             <button className="theme-toggle" aria-label="Toggle theme" onClick={toggleTheme}>
               <i className={`fas ${theme === 'light' ? 'fa-sun' : 'fa-moon'}`} />
             </button>
